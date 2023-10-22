@@ -27,4 +27,12 @@ public class Constraints {
 			}
 		});
 	}
+	
+	public static void setTextFieldString(TextField txt) {
+		txt.textProperty().addListener((obs, oldValue, newValue) -> {
+			if (newValue != null && !newValue.matches("[a-zA-Z]+")) {
+				txt.setText(oldValue);
+			}
+		});
+	}
 }
