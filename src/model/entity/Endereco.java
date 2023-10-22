@@ -10,8 +10,17 @@ public class Endereco {
 	
 	public Endereco() {
 	}
-	
-	
+
+	public Endereco(Long id, String lougradouro, String numero, String complemento, String cep) {
+		super();
+		this.id = id;
+		this.lougradouro = lougradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.cep = cep;
+	}
+
+
 
 	public Endereco(String lougradouro, String numero, String complemento, String cep) {
 		this.lougradouro = lougradouro;
@@ -68,5 +77,9 @@ public class Endereco {
 	@Override
 	public String toString() {
 		return lougradouro + ", Nº" + numero + " " + getComplemento()+" - "+ cep;
+	}
+	
+	public String toStringCSV() {
+		return lougradouro + ";" + numero + ";" + getComplemento()+";"+ cep;
 	}
 }

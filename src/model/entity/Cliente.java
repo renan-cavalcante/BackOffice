@@ -30,7 +30,10 @@ public class Cliente extends Usuario{
 		this.celular = celular;
 	}
 	
-	
+
+	public String toStringCSV() {
+		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+celular;
+	}
 	
 	
 

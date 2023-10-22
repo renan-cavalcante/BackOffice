@@ -1,18 +1,15 @@
 package model.services;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
+import dao.impl.ClienteDaoCSV;
 import model.entity.Cliente;
-import model.entity.Endereco;
 
 public class Clienteservice {
+	ClienteDaoCSV dao = new ClienteDaoCSV();
 
-	public List<Cliente> findAll() {
-		List<Cliente> list = new ArrayList<>();
-		Endereco endereco1 = new Endereco("Rua1", "10", "B", "01013-020");
-		list.add(new Cliente(0157423L, "Robson", endereco1, "11-01574-15420"));
-				
-		return list;
+	public List<Cliente> findAll() throws IOException {				
+		return dao.findAll();
 	}
 }

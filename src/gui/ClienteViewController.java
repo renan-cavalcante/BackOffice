@@ -1,10 +1,12 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.util.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.entity.Cliente;
@@ -76,9 +79,16 @@ public class ClienteViewController implements Initializable {
 		tableViewCliente.prefHeightProperty().bind(stage.heightProperty());
 	}
 	
-	public void updateTableView() {
-		List<Cliente> list = clienteService.findAll();
-		obsList = FXCollections.observableArrayList(list);
-		tableViewCliente.setItems(obsList);
+	public void updateTableView()  {
+		List<Cliente> list;
+		try {
+			list = clienteService.findAll();
+			obsList = FXCollections.observableArrayList(list);
+			tableViewCliente.setItems(obsList);
+		} catch (IOException e) {
+			Alerts.showAlert("Erro", "Erro ao conectar ao banco de dados", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+		
 	}
 }                        
