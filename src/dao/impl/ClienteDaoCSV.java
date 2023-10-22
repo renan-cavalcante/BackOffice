@@ -24,7 +24,8 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 		File arquivo = DB.getArquivo(NOME);
 		FileWriter fileWriter = new FileWriter(arquivo, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		printWriter.write(conteudo.toStringCSV());
+		conteudo.getEndereco().setId(DB. getSequencia("enderecoSequenci"));
+		printWriter.write(conteudo.toStringCSV()+"\r\n");
 		printWriter.close();
 		fileWriter.close();
 	}
@@ -51,6 +52,9 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 		
 		while(linha!=null){
 			String[] dados = linha.split(";");
+			for( String s : dados) {
+				System.out.println(s+" ");
+			}
 			list.add(new Cliente(Long.parseLong(dados[0]), dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
 			linha = buffer.readLine();
 		}
@@ -62,13 +66,49 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 
 	@Override
 	public Cliente findById(Long id) throws IOException {
-		// TODO Auto-generated method stub
+		File arquivo = DB.getArquivo(NOME);
+		FileInputStream fluxo = new FileInputStream(arquivo);
+		InputStreamReader leitor = new InputStreamReader(fluxo);
+		BufferedReader buffer = new BufferedReader(leitor);
+		String linha = buffer.readLine();
+		
+		while(linha!=null){
+			String[] dados = linha.split(";");
+			if(id == Long.parseLong(dados[0])) {
+				fluxo.close();
+				leitor.close();
+				buffer.close();
+				return (new Cliente(Long.parseLong(dados[0]), dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
+			}
+			linha = buffer.readLine();
+		}
+		fluxo.close();
+		leitor.close();
+		buffer.close();
 		return null;
 	}
 
 	@Override
 	public Cliente findByName(String name) throws IOException {
-		// TODO Auto-generated method stub
+		File arquivo = DB.getArquivo(NOME);
+		FileInputStream fluxo = new FileInputStream(arquivo);
+		InputStreamReader leitor = new InputStreamReader(fluxo);
+		BufferedReader buffer = new BufferedReader(leitor);
+		String linha = buffer.readLine();
+		
+		while(linha!=null){
+			String[] dados = linha.split(";");
+			if(name.equalsIgnoreCase(dados[1])) {
+				fluxo.close();
+				leitor.close();
+				buffer.close();
+				return (new Cliente(Long.parseLong(dados[0]), dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
+			}
+			linha = buffer.readLine();
+		}
+		fluxo.close();
+		leitor.close();
+		buffer.close();
 		return null;
 	}
 

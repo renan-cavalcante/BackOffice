@@ -43,7 +43,7 @@
             <TextField fx:id="txtNome" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="txtRua" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="61.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="txtNumero" maxWidth="-Infinity" prefHeight="25.0" prefWidth="53.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="txtcomplemento" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="txtComplemento" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <TextField fx:id="txtCep" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <TextField fx:id="txtContato" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Label fx:id="lbErrorCpfCnpj" textFill="RED" GridPane.columnIndex="2" />

@@ -32,7 +32,7 @@
           <TableColumn fx:id="tableColumnCpf" prefWidth="90.0" text="CPF" />
           <TableColumn fx:id="tableColumnNome" prefWidth="115.0" text="Nome" />
             <TableColumn fx:id="tableColumnEndereco" prefWidth="209.0" text="Endereço" />
-            <TableColumn fx:id="tableColumnCelular" minWidth="7.0" prefWidth="129.0" text="Celular" />
+            <TableColumn fx:id="tableColumnContato" minWidth="7.0" prefWidth="129.0" text="Contato" />
         </columns>
       </TableView>
    </children>

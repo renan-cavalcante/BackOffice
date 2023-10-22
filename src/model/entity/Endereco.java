@@ -80,6 +80,6 @@ public class Endereco {
 	}
 	
 	public String toStringCSV() {
-		return lougradouro + ";" + numero + ";" + getComplemento()+";"+ cep;
+		return id+";"+lougradouro + ";" + numero + ";" +getComplemento()+";"+ cep;
 	}
 }

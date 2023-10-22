@@ -16,7 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import model.services.Clienteservice;
+import model.services.ClienteService;
 
 public class MainViewController implements Initializable {
 
@@ -35,7 +35,7 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void onMenuClienteAction() {
 		loadView("/gui/ClienteView.fxml", (ClienteViewController controller) -> {
-			controller.setClienteService(new Clienteservice());
+			controller.setClienteService(new ClienteService());
 			controller.updateTableView();
 		});
 	}

@@ -26,11 +26,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entity.Cliente;
 import model.entity.Endereco;
-import model.services.Clienteservice;
+import model.services.ClienteService;
 
 public class ClienteViewController implements Initializable {
 	
-	private Clienteservice clienteService;
+	private ClienteService clienteService;
 
 	@FXML
 	private Button buttonCadastrar;
@@ -54,21 +54,22 @@ public class ClienteViewController implements Initializable {
 	private TableColumn<Cliente, Endereco> tableColumnEndereco ;
 	 
 	@FXML
-	private TableColumn<Cliente, String> tableColumnCelular ;
+	private TableColumn<Cliente, String> tableColumnContato ;
 	
 	private ObservableList<Cliente> obsList;
 	
 	@FXML
 	public void onBtCadastrarAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
-		createDialogForm("/gui/ClienteForm.fxml", parentStage);
+		Cliente cliente = new Cliente();
+		createDialogForm(cliente, "/gui/ClienteForm.fxml", parentStage);
 	}
 	
 	@FXML
 	public void onBtPesquisarAction() {
 	}
 
-	public void setClienteService(Clienteservice service) {
+	public void setClienteService(ClienteService service) {
 		clienteService = service;
 	}
 	
@@ -81,7 +82,7 @@ public class ClienteViewController implements Initializable {
 		tableColumnCpf.setCellValueFactory(new PropertyValueFactory<>("id"));
 		tableColumnNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		tableColumnEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
-		tableColumnCelular.setCellValueFactory(new PropertyValueFactory<>("celular"));
+		tableColumnContato.setCellValueFactory(new PropertyValueFactory<>("contato"));
 		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewCliente.prefHeightProperty().bind(stage.heightProperty());
@@ -99,10 +100,15 @@ public class ClienteViewController implements Initializable {
 		}
 	}
 	
-	private void createDialogForm(String absoluteName, Stage parentStage) {
+	private void createDialogForm(Cliente obj, String absoluteName, Stage parentStage) {
 		try {
 			FXMLLoader loader =new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
+			
+			ClienteFormController controller = loader.getController();
+			controller.setCliente(obj);
+			controller.setClienteService(new ClienteService());
+			controller.updateDataForm();
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastra cliente");

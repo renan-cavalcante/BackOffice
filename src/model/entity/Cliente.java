@@ -3,15 +3,23 @@ package model.entity;
 public class Cliente extends Usuario{
 
 	private Endereco endereco;
-	private String celular;
+	private String contato;
+	private String email;
 	
 	public Cliente() {
 	}
 
-	public Cliente(Long id, String nome, Endereco endereco, String celular) {
+	public Cliente(Long id, String nome, Endereco endereco, String contato) {
 		super(id, nome);
 		this.endereco = endereco;
-		this.celular = celular;
+		this.contato = contato;
+	}
+	
+	public Cliente(Long id, String nome, Endereco endereco, String contato, String email) {
+		super(id, nome);
+		this.endereco = endereco;
+		this.contato = contato;
+		this.email = email;
 	}
 
 	public Endereco getEndereco() {
@@ -22,17 +30,25 @@ public class Cliente extends Usuario{
 		this.endereco = endereco;
 	}
 
-	public String getCelular() {
-		return celular;
+	public String getContato() {
+		return contato;
 	}
 
-	public void setCelular(String celular) {
-		this.celular = celular;
+	public void setContato(String contato) {
+		this.contato = contato;
 	}
 	
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String toStringCSV() {
-		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+celular;
+		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+contato+";"+email;
 	}
 	
 	
