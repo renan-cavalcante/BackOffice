@@ -29,10 +29,10 @@
       </ToolBar>
       <TableView fx:id="tableViewCliente" prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn fx:id="tableColumnCpf" prefWidth="75.0" text="CPF" />
-          <TableColumn fx:id="tableColumnNome" prefWidth="75.0" text="Nome" />
-            <TableColumn fx:id="tableColumnEndereco" prefWidth="75.0" text="Endereço" />
-            <TableColumn fx:id="tableColumnCelular" prefWidth="75.0" text="Celular" />
+          <TableColumn fx:id="tableColumnCpf" prefWidth="90.0" text="CPF" />
+          <TableColumn fx:id="tableColumnNome" prefWidth="115.0" text="Nome" />
+            <TableColumn fx:id="tableColumnEndereco" prefWidth="209.0" text="Endereço" />
+            <TableColumn fx:id="tableColumnCelular" minWidth="7.0" prefWidth="129.0" text="Celular" />
         </columns>
       </TableView>
    </children>
