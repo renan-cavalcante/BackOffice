@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import application.Main;
+import gui.listeners.DataChargeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -28,7 +29,7 @@ import model.entity.Cliente;
 import model.entity.Endereco;
 import model.services.ClienteService;
 
-public class ClienteViewController implements Initializable {
+public class ClienteViewController implements Initializable, DataChargeListener {
 	
 	private ClienteService clienteService;
 
@@ -109,6 +110,7 @@ public class ClienteViewController implements Initializable {
 			controller.setCliente(obj);
 			controller.setClienteService(new ClienteService());
 			controller.updateDataForm();
+			controller.subscribeDataListener(this);
 			
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastra cliente");
@@ -121,5 +123,10 @@ public class ClienteViewController implements Initializable {
 		catch(IOException e) {
 			Alerts.showAlert("IO Excpetion", "Erro carregando view", e.getMessage(), AlertType.ERROR);
 		}
+	}
+
+	@Override
+	public void onDataChanged() {
+		updateTableView();
 	}
 }                        

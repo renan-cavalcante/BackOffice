@@ -2,8 +2,11 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import gui.listeners.DataChargeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
@@ -24,6 +27,8 @@ public class ClienteFormController implements Initializable {
 	private Cliente cliente;
 	
 	private ClienteService service;
+	
+	private List<DataChargeListener> listeners = new ArrayList<>();
 
 	@FXML
 	private RadioButton rbtPessoaFisica;
@@ -93,11 +98,16 @@ public class ClienteFormController implements Initializable {
 		this.service = service;
 	}
 	
+	public void subscribeDataListener(DataChargeListener listener) {
+		listeners.add(listener);
+	}
+	
 	@FXML
 	public void onBtSalvarAction(ActionEvent event) {
 		try {
 			cliente = getFormData();
 			service.saveOrUpdate(cliente);
+			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
 			
 		} catch (IOException e) {
@@ -106,6 +116,12 @@ public class ClienteFormController implements Initializable {
 		}
 	}
 	
+
+	private void notifyDataChangeListeners() {
+		for(DataChargeListener listener: listeners) {
+			listener.onDataChanged();
+		}
+	}
 
 	@FXML
 	public void onBtCancelarAction(ActionEvent event) {
