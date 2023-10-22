@@ -8,8 +8,8 @@ public class Cliente extends Usuario{
 	public Cliente() {
 	}
 
-	public Cliente(Endereco endereco, String celular) {
-		super();
+	public Cliente(Long id, String nome, Endereco endereco, String celular) {
+		super(id, nome);
 		this.endereco = endereco;
 		this.celular = celular;
 	}

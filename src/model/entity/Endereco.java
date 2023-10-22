@@ -2,6 +2,7 @@ package model.entity;
 
 public class Endereco {
 
+	private Long id;
 	private String lougradouro;
 	private String numero;
 	private String complemento;
@@ -13,7 +14,6 @@ public class Endereco {
 	
 
 	public Endereco(String lougradouro, String numero, String complemento, String cep) {
-		super();
 		this.lougradouro = lougradouro;
 		this.numero = numero;
 		this.complemento = complemento;
@@ -39,7 +39,10 @@ public class Endereco {
 	}
 
 	public String getComplemento() {
-		return complemento;
+		if(complemento != null) {
+			return complemento;
+		}
+		return "";
 	}
 
 	public void setComplemento(String complemento) {
@@ -54,6 +57,16 @@ public class Endereco {
 		this.cep = cep;
 	}
 	
-	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	@Override
+	public String toString() {
+		return lougradouro + ", Nº" + numero + " " + getComplemento()+" - "+ cep;
+	}
 }
