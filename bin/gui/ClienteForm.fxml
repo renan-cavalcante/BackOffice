@@ -33,6 +33,7 @@
         </rowConstraints>
          <children>
             <Label fx:id="lbCpfCnpj" text="CPF:" />
+            
             <Label fx:id="lbNome" text="Nome:" GridPane.rowIndex="1" />
             <Label text="Rua:" GridPane.rowIndex="2" />
             <Label text="Numero:" GridPane.rowIndex="3" />

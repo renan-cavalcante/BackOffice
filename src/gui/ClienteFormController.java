@@ -135,7 +135,9 @@ public class ClienteFormController implements Initializable {
 		txtEmail.setDisable(true);
 		lbContato.setText("Celular");
 		lbNome.setText("Nome");
-		Constraints.setTextFieldMaxLength(txtCpfCnpj, 11);
+		Constraints.mascaraCPF(txtCpfCnpj);
+		Constraints.mascaraCelular(txtContato);
+		Constraints.tamanhoCpf = 14;
 	}
 	
 	@FXML
@@ -145,7 +147,9 @@ public class ClienteFormController implements Initializable {
 		txtEmail.setDisable(false);
 		lbContato.setText("Telefone");
 		lbNome.setText("Empresa");
-		Constraints.setTextFieldMaxLength(txtCpfCnpj, 14);
+		Constraints.mascaraCNPJ(txtCpfCnpj);
+		Constraints.mascaraTelefone(txtContato);
+		Constraints.tamanhoCpf = 18;
 	}
 
 	@Override
@@ -154,10 +158,13 @@ public class ClienteFormController implements Initializable {
 	}
 	
 	private void initializeNode() {
-		Constraints.setTextFieldInteger(txtCpfCnpj);
 		Constraints.setTextFieldMaxLength(txtNome, 60);
 		Constraints.setTextFieldString(txtNome);
-		onRbtPessoaAction();
+		Constraints.mascaraCEP(txtCep);
+		Constraints.mascaraCelular(txtContato);
+		Constraints.mascaraCPF(txtCpfCnpj);
+		Constraints.tamanhoCpf = 14;
+		Constraints.setTextFieldMaxLengthCPF(txtCpfCnpj);
 	}
 	
 	public void updateDataForm() {
@@ -178,6 +185,7 @@ public class ClienteFormController implements Initializable {
 		txtCep.setText(cep);
 		txtContato.setText(contato);
 		txtEmail.setText(email);
+		
 	}
 	
 	private Cliente getFormData() {
