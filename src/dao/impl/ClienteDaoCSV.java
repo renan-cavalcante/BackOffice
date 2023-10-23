@@ -31,7 +31,7 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 	}
 
 	@Override
-	public void delete(Long id) throws IOException {
+	public void delete(String id) throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
@@ -55,7 +55,7 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 			for( String s : dados) {
 				System.out.println(s+" ");
 			}
-			list.add(new Cliente(Long.parseLong(dados[0]), dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
+			list.add(new Cliente(dados[0], dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7],dados[8]));
 			linha = buffer.readLine();
 		}
 		fluxo.close();
@@ -65,7 +65,7 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 	}
 
 	@Override
-	public Cliente findById(Long id) throws IOException {
+	public Cliente findById(String id) throws IOException {
 		File arquivo = DB.getArquivo(NOME);
 		FileInputStream fluxo = new FileInputStream(arquivo);
 		InputStreamReader leitor = new InputStreamReader(fluxo);
@@ -74,11 +74,11 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 		
 		while(linha!=null){
 			String[] dados = linha.split(";");
-			if(id == Long.parseLong(dados[0])) {
+			if(id.equals(dados[0])) {
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				return (new Cliente(Long.parseLong(dados[0]), dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
+				return (new Cliente(dados[0], dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
 			}
 			linha = buffer.readLine();
 		}
@@ -102,7 +102,7 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				return (new Cliente(Long.parseLong(dados[0]), dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
+				return (new Cliente(dados[0], dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
 			}
 			linha = buffer.readLine();
 		}

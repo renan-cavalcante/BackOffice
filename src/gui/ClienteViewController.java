@@ -57,6 +57,9 @@ public class ClienteViewController implements Initializable, DataChargeListener 
 	@FXML
 	private TableColumn<Cliente, String> tableColumnContato ;
 	
+	@FXML
+	private TableColumn<Cliente, String> tableColumnEmail ;
+	
 	private ObservableList<Cliente> obsList;
 	
 	@FXML
@@ -84,6 +87,7 @@ public class ClienteViewController implements Initializable, DataChargeListener 
 		tableColumnNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
 		tableColumnEndereco.setCellValueFactory(new PropertyValueFactory<>("endereco"));
 		tableColumnContato.setCellValueFactory(new PropertyValueFactory<>("contato"));
+		tableColumnEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
 		
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewCliente.prefHeightProperty().bind(stage.heightProperty());

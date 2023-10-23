@@ -192,7 +192,7 @@ public class ClienteFormController implements Initializable {
 		Cliente cliente = new Cliente();
 		Endereco endereco = new Endereco();
 		
-		cliente.setId(Utils.tryParseLong(txtCpfCnpj.getText()));
+		cliente.setId(txtCpfCnpj.getText());
 		cliente.setNome(txtNome.getText());
 		endereco.setLougradouro(txtRua.getText());
 		endereco.setNumero(txtNumero.getText());

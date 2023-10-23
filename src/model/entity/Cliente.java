@@ -9,13 +9,13 @@ public class Cliente extends Usuario{
 	public Cliente() {
 	}
 
-	public Cliente(Long id, String nome, Endereco endereco, String contato) {
+	public Cliente(String id, String nome, Endereco endereco, String contato) {
 		super(id, nome);
 		this.endereco = endereco;
 		this.contato = contato;
 	}
 	
-	public Cliente(Long id, String nome, Endereco endereco, String contato, String email) {
+	public Cliente(String id, String nome, Endereco endereco, String contato, String email) {
 		super(id, nome);
 		this.endereco = endereco;
 		this.contato = contato;
@@ -40,7 +40,7 @@ public class Cliente extends Usuario{
 	
 
 	public String getEmail() {
-		return email;
+		return email = email == null ? " ": email;
 	}
 
 	public void setEmail(String email) {
@@ -48,7 +48,7 @@ public class Cliente extends Usuario{
 	}
 
 	public String toStringCSV() {
-		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+contato+";"+email;
+		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+contato+";"+getEmail();
 	}
 	
 	

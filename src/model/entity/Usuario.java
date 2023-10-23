@@ -2,22 +2,22 @@ package model.entity;
 
 public abstract class Usuario {
 
-	private Long id;
+	private String id;
 	private String nome;
 	
 	public Usuario() {
 	}
 		
-	public Usuario(Long id, String nome) {
+	public Usuario(String id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getNome() {
