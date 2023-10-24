@@ -50,7 +50,10 @@ public class Cliente extends Usuario{
 	public String toStringCSV() {
 		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+contato+";"+getEmail();
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "Cliente [endereco=" + endereco + ", contato=" + contato + ", email=" + email + ", getId()=" + getId()
+				+ ", getNome()=" + getNome() + "]";
+	}
 }

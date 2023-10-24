@@ -10,5 +10,5 @@ public interface IArquivoCSV<T> {
 	void update(T conteudo) throws IOException;
 	List<T> findAll() throws IOException;
 	T findById(String id) throws IOException;
-	T findByName(String name) throws IOException;
+	List<T> findByName(String name) throws IOException;
 }

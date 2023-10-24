@@ -12,33 +12,33 @@ import java.util.List;
 
 import dao.IArquivoCSV;
 import db.DB;
-import model.entity.Cliente;
-import model.entity.Endereco;
+import gui.util.Utils;
+import model.entity.CategoriaProduto;
 
-public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
+public class CategoriaProdutoDaoCSV implements IArquivoCSV<CategoriaProduto>{
 	
-	private final String NOME = "cliente";
+	private final String NOME = "categoria_produto";
 
 	@Override
-	public void insert(Cliente conteudo) throws IOException {
+	public void insert(CategoriaProduto conteudo) throws IOException {
 		File arquivo = DB.getArquivo(NOME);
 		FileWriter fileWriter = new FileWriter(arquivo, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		conteudo.getEndereco().setId(DB. getSequencia("enderecoSequenci"));
-		printWriter.write(conteudo.toStringCSV()+"\r\n");
+		conteudo.setId(DB. getSequencia("categoriaProdutosSequenci"));
+		printWriter.write(conteudo.toStringCsv()+"\r\n");
 		printWriter.close();
 		fileWriter.close();
 	}
 
 	@Override
 	public void delete(String id) throws IOException {
-		List<Cliente> list = findAll();
+		List<CategoriaProduto> list = findAll();
 		File arquivo = DB.getArquivo(NOME);
 		FileWriter fileWriter = new FileWriter(arquivo, false);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		for(Cliente c : list) {
-			if(!id.equals(c.getId())) {
-				printWriter.write(c.toStringCSV()+"\r\n");
+		for(CategoriaProduto c : list) {
+			if(Utils.tryParseLong(id) != (c.getId())) {
+				printWriter.write(c.toStringCsv()+"\r\n");
 			}
 			
 		}
@@ -48,16 +48,15 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 	}
 
 	@Override
-	public void update(Cliente conteudo) throws IOException {
+	public void update(CategoriaProduto conteudo) throws IOException {
 		
-		List<Cliente> list = findAll();
+		List<CategoriaProduto> list = findAll();
 		
 		int tamanho = list.size();
 		for(int i = 0; i < tamanho; i++){
 			
 			
-			if(conteudo.getId().equals(list.get(i).getId())) {
-				conteudo.getEndereco().setId(list.get(i).getEndereco().getId());
+			if(conteudo.getId() == (list.get(i).getId())) {
 				list.set(i, conteudo);
 			}
 	
@@ -65,16 +64,16 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 		File arquivo = DB.getArquivo(NOME);
 		FileWriter fileWriter = new FileWriter(arquivo, false);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		for(Cliente c : list) {
-			printWriter.write(c.toStringCSV()+"\r\n");
+		for(CategoriaProduto c : list) {
+			printWriter.write(c.toStringCsv()+"\r\n");
 		}
 		printWriter.close();
 		fileWriter.close();
 	}
 
 	@Override
-	public List<Cliente> findAll() throws IOException {
-		List<Cliente> list = new ArrayList<>();
+	public List<CategoriaProduto> findAll() throws IOException {
+		List<CategoriaProduto> list = new ArrayList<>();
 		File arquivo = DB.getArquivo(NOME);
 		FileInputStream fluxo = new FileInputStream(arquivo);
 		InputStreamReader leitor = new InputStreamReader(fluxo);
@@ -83,7 +82,7 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 		
 		while(linha!=null){
 			String[] dados = linha.split(";");
-			list.add(new Cliente(dados[0], dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7],dados[8]));
+			list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2]));
 			linha = buffer.readLine();
 		}
 		fluxo.close();
@@ -93,7 +92,8 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 	}
 
 	@Override
-	public Cliente findById(String id) throws IOException {
+	public CategoriaProduto findById(String id) throws IOException {
+		
 		File arquivo = DB.getArquivo(NOME);
 		FileInputStream fluxo = new FileInputStream(arquivo);
 		InputStreamReader leitor = new InputStreamReader(fluxo);
@@ -102,11 +102,11 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 		
 		while(linha!=null){
 			String[] dados = linha.split(";");
-			if(id.trim().equals(dados[0])) {
+			if(id.equals(dados[0])) {
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				return (new Cliente(dados[0], dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
+				return (new CategoriaProduto(Utils.tryParseLong(dados[0]),dados[1],dados[2]));
 			}
 			linha = buffer.readLine();
 		}
@@ -117,8 +117,8 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 	}
 
 	@Override
-	public List<Cliente> findByName(String name) throws IOException {
-		List<Cliente> list = new ArrayList<>();
+	public List<CategoriaProduto> findByName(String name) throws IOException {
+		List<CategoriaProduto> list = new ArrayList<>();
 		File arquivo = DB.getArquivo(NOME);
 		FileInputStream fluxo = new FileInputStream(arquivo);
 		InputStreamReader leitor = new InputStreamReader(fluxo);
@@ -131,7 +131,7 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				list.add(new Cliente(dados[0], dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
+				list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2]));
 			}
 			linha = buffer.readLine();
 		}

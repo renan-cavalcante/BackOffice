@@ -16,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.CategoriaProdutoService;
 import model.services.ClienteService;
 
 public class MainViewController implements Initializable {
@@ -32,6 +33,7 @@ public class MainViewController implements Initializable {
 	@FXML
 	private MenuItem menuLogin;
 	
+	@SuppressWarnings("rawtypes")
 	@FXML
 	public void onMenuClienteAction() {
 		loadView("/gui/ClienteView.fxml", (ClienteViewController controller) -> {
@@ -47,7 +49,11 @@ public class MainViewController implements Initializable {
 	
 	@FXML
 	public void onMenuItemCategoriaAction() {
-		
+		loadView("/gui/CategoriaProdutoView.fxml", (CategoriaProdutoViewController controller) -> {
+			controller.setCategoriaProdutoService(new CategoriaProdutoService());
+			controller.updateListView();
+		}
+		);
 	}
 	
 	@FXML
@@ -79,6 +85,7 @@ public class MainViewController implements Initializable {
 		}
 		catch(IOException e) {
 			Alerts.showAlert("IO Exception", "Erro ao carregar View", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
 		}
 	}
 

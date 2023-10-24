@@ -2,6 +2,7 @@ package gui.util;
 
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class Utils {
@@ -26,6 +27,10 @@ public class Utils {
 		catch(NumberFormatException e){
 			return null;
 		}
+	}
+
+	public static Stage currentStage(MouseEvent event) {
+		return (Stage) ((Node) event.getSource()).getScene().getWindow();
 	}
 
 }
