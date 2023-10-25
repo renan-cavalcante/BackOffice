@@ -28,6 +28,15 @@ public class Utils {
 			return null;
 		}
 	}
+	
+	public static Double tryParseDouble(String str) {
+		try {
+			return Double.parseDouble(str);
+		}
+		catch(NumberFormatException e){
+			return null;
+		}
+	}
 
 	public static Stage currentStage(MouseEvent event) {
 		return (Stage) ((Node) event.getSource()).getScene().getWindow();

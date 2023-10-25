@@ -43,8 +43,6 @@ public class CategoriaProdutoService {
 		for(CategoriaProduto c : categoriaProdutos) {
 			if(c.getNome().contains(nome)) {
 				resultado.add(c);
-	
-				System.out.println(c.toString());
 			}
 		}
 		resultado.sort(compNome);

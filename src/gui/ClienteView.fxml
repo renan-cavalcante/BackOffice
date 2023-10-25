@@ -1,48 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1074.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClienteViewController">
+<AnchorPane prefHeight="580.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ClienteViewController">
    <children>
-      <Label text="Cliente">
-         <VBox.margin>
-            <Insets left="10.0" top="5.0" />
-         </VBox.margin>
-         <font>
-            <Font name="Arial" size="15.0" />
-         </font>
-      </Label>
-      <ToolBar prefHeight="40.0" prefWidth="200.0">
-        <items>
-          <Button fx:id="buttonCadastrar" mnemonicParsing="false" onAction="#onBtCadastrarAction" text="Cadastrar" />
-            <TextField fx:id="txfPesquisar" alignment="TOP_LEFT">
-               <cursor>
-                  <Cursor fx:constant="TEXT" />
-               </cursor></TextField>
-            <Button fx:id="buttonPesquisar" mnemonicParsing="false" onAction="#onBtPesquisarAction" text="Pesquisar" />
-        </items>
-      </ToolBar>
-      <TableView fx:id="tableViewCliente" onMouseClicked="#onBtTableLineAction" prefHeight="200.0" prefWidth="960.0">
-        <columns>
-          <TableColumn fx:id="tableColumnCpf" prefWidth="128.0" text="CPF" />
-          <TableColumn fx:id="tableColumnNome" prefWidth="135.0" text="Nome" />
-            <TableColumn fx:id="tableColumnEndereco" prefWidth="200.0" text="Endereço" />
-            <TableColumn fx:id="tableColumnContato" minWidth="7.0" prefWidth="137.0" text="Contato" />
-            <TableColumn fx:id="tableColumnEmail" prefWidth="204.0" text="Email" />
-            <TableColumn fx:id="tableColumnREMOVER" prefWidth="75.0" text="Remover" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
+      <ScrollPane prefHeight="580.0" prefWidth="642.0">
+         <content>
+            <VBox prefHeight="560.0" prefWidth="603.0">
+               <children>
+                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="CPF/CNPJ:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Label>
+                        <Label fx:id="labelId" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="26.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Nome:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Label>
+                        <Label fx:id="labelNome" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Endereço:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="labelEndereco" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Contato:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="labelContato" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="25.0" prefWidth="593.0" spacing="5.0">
+                     <children>
+                        <Label text="Email:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="labelEmail">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <AnchorPane prefHeight="104.0" prefWidth="616.0">
+                     <children>
+                        <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
+                           <buttons>
+                              <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#onBtnEditar" text="Editar" />
+                              <Button fx:id="btnExcluir" mnemonicParsing="false" onAction="#onBtnExcluir" text="Excluir" />
+                           </buttons>
+                        </ButtonBar>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
    </children>
-</VBox>
+</AnchorPane>

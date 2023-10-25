@@ -18,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import model.services.CategoriaProdutoService;
 import model.services.ClienteService;
+import model.services.ProdutoService;
 
 public class MainViewController implements Initializable {
 
@@ -33,10 +34,9 @@ public class MainViewController implements Initializable {
 	@FXML
 	private MenuItem menuLogin;
 	
-	@SuppressWarnings("rawtypes")
 	@FXML
 	public void onMenuClienteAction() {
-		loadView("/gui/ClienteView.fxml", (ClienteViewController controller) -> {
+		loadView("/gui/ClienteTabl.fxml", (ClienteTablController controller) -> {
 			controller.setClienteService(new ClienteService());
 			controller.updateTableView();
 		});
@@ -44,14 +44,18 @@ public class MainViewController implements Initializable {
 	
 	@FXML
 	public void onMenuItemProdutosAction() {
-		
+		loadView("/gui/ProdutoTabl.fxml", (ProdutoTablController controller) -> {
+			controller.setProdutoService(new ProdutoService());
+			controller.updateTableView();
+		}
+		);
 	}
 	
 	@FXML
 	public void onMenuItemCategoriaAction() {
-		loadView("/gui/CategoriaProdutoView.fxml", (CategoriaProdutoViewController controller) -> {
+		loadView("/gui/CategoriaProdutoTable.fxml", (CategoriaProdutoTablController controller) -> {
 			controller.setCategoriaProdutoService(new CategoriaProdutoService());
-			controller.updateListView();
+			controller.updateTableView();
 		}
 		);
 	}
@@ -71,10 +75,8 @@ public class MainViewController implements Initializable {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			VBox newVbox = loader.load();
-			
 			Scene mainScene = Main.getMainScene();
 			VBox mainVbox =   (VBox)((ScrollPane) mainScene.getRoot()).getContent();
-			
 			Node mainMenu = mainVbox.getChildren().get(0);
 			mainVbox.getChildren().clear();
 			mainVbox.getChildren().add(mainMenu);

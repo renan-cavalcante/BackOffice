@@ -43,8 +43,6 @@ public class ClienteService {
 		for(Cliente c : clientes) {
 			if(c.getNome().contains(nome)) {
 				resultado.add(c);
-	
-				System.out.println(c.toString());
 			}
 		}
 		resultado.sort(compNome);

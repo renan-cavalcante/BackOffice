@@ -2,12 +2,12 @@ package model.entity;
 
 public class CategoriaProduto {
 
-	private Long idCategoria;
+	private Long id;
 	private String nome;
 	private String descricao;
 
-	public CategoriaProduto(Long idCategoria, String nome, String descricao) {
-		this.idCategoria = idCategoria;
+	public CategoriaProduto(Long id, String nome, String descricao) {
+		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 	}
@@ -17,11 +17,11 @@ public class CategoriaProduto {
 	}
 	
 	public Long getId() {
-		return idCategoria;
+		return id;
 	}
 
 	public void setId(Long idCategoria) {
-		this.idCategoria = idCategoria;
+		this.id = idCategoria;
 	}
 
 	public String getNome() {
@@ -41,12 +41,12 @@ public class CategoriaProduto {
 	}
 	
 	public String toStringCsv() {
-		return  idCategoria + ";" + nome + ";" + descricao;
+		return  id + ";" + nome + ";" + descricao;
 	}
 
 	@Override
 	public String toString() {
-		return nome+"\n\t a\n\t a";
+		return nome;
 	}
 	
 	public String toString2() {
