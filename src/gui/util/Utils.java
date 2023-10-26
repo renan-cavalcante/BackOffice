@@ -41,5 +41,12 @@ public class Utils {
 	public static Stage currentStage(MouseEvent event) {
 		return (Stage) ((Node) event.getSource()).getScene().getWindow();
 	}
+	
+	public static String classeChamadora () {
+        Throwable thr = new Throwable();
+        thr.fillInStackTrace ();
+        StackTraceElement[] ste = thr.getStackTrace();
+        return ste [2].getClassName();
+    }
 
 }

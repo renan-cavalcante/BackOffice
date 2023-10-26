@@ -14,11 +14,10 @@ import dao.IArquivoCSV;
 import db.DB;
 import gui.util.Utils;
 import model.entity.Produto;
-import model.services.CategoriaProdutoService;
 
 public class ProdutoDaoCSV implements IArquivoCSV<Produto>{
 	
-	private CategoriaProdutoService serviceProduto = new CategoriaProdutoService();
+	private CategoriaProdutoDaoCSV daoProduto;
 	
 	private final String NOME = "produto";
 
@@ -86,7 +85,10 @@ public class ProdutoDaoCSV implements IArquivoCSV<Produto>{
 		
 		while(linha!=null){
 			String[] dados = linha.split(";");
-			list.add(new Produto(Utils.tryParseLong(dados[0]), dados[1], Utils.tryParseDouble(dados[2]),dados[3], Utils.tryParseInt(dados[4]),serviceProduto.findById(dados[5])));
+			if(daoProduto == null) {
+				setCategoriaProdutoDaoCSV();
+			}
+			list.add(new Produto(Utils.tryParseLong(dados[0]), dados[1], Utils.tryParseDouble(dados[2]),dados[3], Utils.tryParseInt(dados[4]),daoProduto.findById(dados[5])));
 			linha = buffer.readLine();
 		}
 		fluxo.close();
@@ -109,7 +111,10 @@ public class ProdutoDaoCSV implements IArquivoCSV<Produto>{
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				return (new Produto(Utils.tryParseLong(dados[0]), dados[1], Utils.tryParseDouble(dados[2]),dados[3], Utils.tryParseInt(dados[4]),serviceProduto.findById(dados[5])));
+				if(daoProduto == null) {
+					setCategoriaProdutoDaoCSV();
+				}
+				return (new Produto(Utils.tryParseLong(dados[0]), dados[1], Utils.tryParseDouble(dados[2]),dados[3], Utils.tryParseInt(dados[4]),daoProduto.findById(dados[5])));
 			}
 			linha = buffer.readLine();
 		}
@@ -134,7 +139,7 @@ public class ProdutoDaoCSV implements IArquivoCSV<Produto>{
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				list.add(new Produto(Utils.tryParseLong(dados[0]), dados[1], Utils.tryParseDouble(dados[2]),dados[3], Utils.tryParseInt(dados[4]),serviceProduto.findById(dados[5])));
+				list.add(new Produto(Utils.tryParseLong(dados[0]), dados[1], Utils.tryParseDouble(dados[2]),dados[3], Utils.tryParseInt(dados[4]),daoProduto.findById(dados[5])));
 			}
 			linha = buffer.readLine();
 		}
@@ -145,5 +150,8 @@ public class ProdutoDaoCSV implements IArquivoCSV<Produto>{
 		return list;
 	}
 
+	private void setCategoriaProdutoDaoCSV() {
+		daoProduto = new CategoriaProdutoDaoCSV();
+	}
 	
 }

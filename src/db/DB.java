@@ -23,7 +23,11 @@ public class DB {
 		if(!arquivo.exists() || !arquivo.isFile()) {
 			arquivo.createNewFile();
 			if(arquivo.getPath().contains("Sequenci")) {
-				addSequencia(arquivo.getPath(),1+"");
+				FileWriter fileWriter = new FileWriter(arquivo, true);
+				PrintWriter printWriter = new PrintWriter(fileWriter);
+				printWriter.write("0");
+				printWriter.close();
+				fileWriter.close();
 			}
 		}
 		return arquivo;	

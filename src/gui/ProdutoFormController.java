@@ -11,6 +11,8 @@ import java.util.Set;
 import gui.listeners.DataChargeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,6 +25,7 @@ import javafx.scene.control.TextField;
 import model.entity.CategoriaProduto;
 import model.entity.Produto;
 import model.exception.ValidationException;
+import model.services.CategoriaProdutoService;
 import model.services.ProdutoService;
 
 public class ProdutoFormController implements Initializable {
@@ -30,6 +33,7 @@ public class ProdutoFormController implements Initializable {
 	private Produto produto;
 
 	private ProdutoService service;
+	private CategoriaProdutoService categoriaService;
 
 	private List<DataChargeListener> listeners = new ArrayList<>();
 
@@ -48,6 +52,8 @@ public class ProdutoFormController implements Initializable {
 
 	@FXML
 	private ComboBox<CategoriaProduto> cbxCategoria;
+	
+	private ObservableList<CategoriaProduto> obsList;
 	
 
 	@FXML
@@ -68,6 +74,10 @@ public class ProdutoFormController implements Initializable {
 
 	public void setProdutoService(ProdutoService service) {
 		this.service = service;
+	}
+	
+	public void setCategoriaProdutoService(CategoriaProdutoService service) {
+		this.categoriaService = service;
 	}
 
 	public void subscribeDataListener(DataChargeListener listener) {
@@ -100,6 +110,19 @@ public class ProdutoFormController implements Initializable {
 	public void onBtCancelarAction(ActionEvent event) {
 		Utils.currentStage(event).close();
 	}
+	
+	public void updateComboBoxView() {
+		List<CategoriaProduto> list;
+		try {
+			list = categoriaService.findAll();
+			obsList = FXCollections.observableArrayList(list);
+			cbxCategoria.setItems(obsList);
+
+		} catch (IOException e) {
+			Alerts.showAlert("Erro", "Erro ao conectar ao banco de dados", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -119,15 +142,15 @@ public class ProdutoFormController implements Initializable {
 	public void updateDataForm() {
 		String id = produto.getId() == null ? "" : produto.getId().toString();
 		String nome = produto.getNome() == null ? "" : produto.getNome();
-		String valor = produto.getValor().toString() == null ? "" : produto.getValor().toString();
-		String quantidade = produto.getQuantidade().toString() == null ? "" : produto.getQuantidade().toString();
+		String valor = produto.getValor() == null ? "" : produto.getValor().toString();
+		String quantidade = produto.getQuantidade() == null ? "" : produto.getQuantidade().toString();
 		String descricao = produto.getDescricao() == null ? "" : produto.getDescricao();
 		CategoriaProduto categoria = produto.getCategoria();
 
 		txtId.setText(id);
 		txtNome.setText(nome);
 		txtValor.setText(valor);
-		txtValor.setText(quantidade);
+		txtQuantidade.setText(quantidade);
 		cbxCategoria.setValue(categoria);
 		txtAreaDescricao.setText(descricao);
 
@@ -136,13 +159,17 @@ public class ProdutoFormController implements Initializable {
 
 	private Produto getFormData() {
 		Produto produto = new Produto();
+		CategoriaProduto categoriaProduto = cbxCategoria.getValue();
 
 		ValidationException exception = new ValidationException("Validação erros");
 		validacao(exception);
 
 		produto.setId(Utils.tryParseLong(txtId.getText()));
 		produto.setNome(txtNome.getText());
+		produto.setValor(Utils.tryParseDouble(txtValor.getText()));
+		produto.setQuantidade(Utils.tryParseInt(txtQuantidade.getText()));
 		produto.setDescricao(txtAreaDescricao.getText());
+		produto.setCategoria(categoriaProduto);
 	
 
 		if (exception.getErros().size() > 0) {

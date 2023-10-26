@@ -12,8 +12,6 @@ import java.util.function.Consumer;
 import gui.listeners.DataChargeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,21 +21,17 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.entity.CategoriaProduto;
 import model.entity.Produto;
-import model.services.CategoriaProdutoService;
 import model.services.ProdutoService;
 
-public class CategoriaProdutoViewController implements Initializable {
+public class ProdutoViewController implements Initializable {
 	
-	private CategoriaProduto categoriaProduto;
-	private CategoriaProdutoService categoriaProdutoService;
-	private ProdutoService produtoService = new ProdutoService();
+	private Produto produto;
+	private ProdutoService produtoService;
 	private List<DataChargeListener> listeners = new ArrayList<>();
 	
 	@FXML
@@ -47,36 +41,41 @@ public class CategoriaProdutoViewController implements Initializable {
 	private Label labelNome;
 	
 	@FXML
-	private TextArea txtAreaDescricao;
+	private Label labelValor;
 	
 	@FXML
-	private ListView<Produto> listViewProdutos;
+	private Label labelQuantidade;
 	
+	@FXML
+	private Label labelCategoria;
+	
+	@FXML
+	private TextArea txtAreaDescricao;
+
 	@FXML
 	private Button btnEditar;
 	
 	@FXML
 	private Button btnExcluir;
 	
-	private ObservableList<Produto> obsList;
-	
 	@FXML
 	public void onBtnEditar(ActionEvent event) {
-		createDialogForm(categoriaProduto, "/gui/CategoriaProdutoForm.fxml", Utils.currentStage(event),
-				(x) -> {});
+		createDialogForm(produto, "/gui/ProdutoForm.fxml", Utils.currentStage(event),
+				(ProdutoFormController controller) -> {
+				});
 	}
 	
 	@FXML
 	public void onBtnExcluir(ActionEvent event) {
-		Optional<ButtonType> escolha = Alerts.showConfirmation("Confirmar", "Deseja mesmo deletar o cliente");
+		Optional<ButtonType> escolha = Alerts.showConfirmation("Confirmar", "Deseja mesmo deletar o produto");
 		if (escolha.get() == ButtonType.OK) {
 
 			try {
-				categoriaProdutoService.remove(categoriaProduto);
+				produtoService.remove(produto);
 				notifyDataChangeListeners();
 				Utils.currentStage(event).close();
 			} catch (IOException e) {
-				Alerts.showAlert("Erro", "Erro ao deletar o cliente", e.getMessage(), AlertType.ERROR);
+				Alerts.showAlert("Erro", "Erro ao deletar o produto", e.getMessage(), AlertType.ERROR);
 				e.printStackTrace();
 			}
 		}
@@ -91,61 +90,49 @@ public class CategoriaProdutoViewController implements Initializable {
 	public void subscribeDataListener(DataChargeListener listener) {
 		listeners.add(listener);
 	}
-	
-	public void updateListView() {
-		List<Produto> list;
-		try {
-			list = produtoService.findAll();
-			obsList = FXCollections.observableArrayList(list);
-			listViewProdutos.setItems(obsList);
-
-		} catch (IOException e) {
-			Alerts.showAlert("Erro", "Erro ao conectar ao banco de dados", e.getMessage(), AlertType.ERROR);
-			e.printStackTrace();
-		}
-	}
-
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		updateListView();
+		// TODO Auto-generated method stub
 		
 	}
 	
 	public void updateDataForm() {
-		String id = categoriaProduto.getId().toString();
-		String nome = categoriaProduto.getNome();
-		String descricao = categoriaProduto.getDescricao();
+		String id = produto.getId().toString();
+		String nome = produto.getNome();
+		String valor = produto.getValor().toString();
+		String quantidade = produto.getQuantidade().toString();
+		String descricao = produto.getDescricao();
+		String categoria = produto.getCategoria().getNome();
 
 		labelId.setText(id);
 		labelNome.setText(nome);
+		labelValor.setText(valor);
+		labelQuantidade.setText(quantidade);
+		labelCategoria.setText(categoria);
 		txtAreaDescricao.setText(descricao);
 
-	}
-	
-	public void setCategoriaProdutoService(CategoriaProdutoService service) {
-		categoriaProdutoService = service;
 	}
 	
 	public void setProdutoService(ProdutoService service) {
 		produtoService = service;
 	}
 	
-	public void setCategoriaProduto(CategoriaProduto categoriaProduto) {
-		this.categoriaProduto = categoriaProduto;
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
 	
 	@SuppressWarnings({ "unchecked" })
-	private <T> void createDialogForm(CategoriaProduto obj, String absoluteName, Stage parentStage,
+	private <T> void createDialogForm(Produto obj, String absoluteName, Stage parentStage,
 			Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
 
-			CategoriaProdutoFormController controller = loader.getController();
+			ProdutoFormController controller = loader.getController();
 
-			controller.setCategoriaProduto(obj);
-			controller.setCategoriaProdutoService(new CategoriaProdutoService());
+			controller.setProduto(obj);
+			controller.setProdutoService(new ProdutoService());
 			controller.updateDataForm();
 
 			initializingAction.accept((T) controller);

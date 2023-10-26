@@ -31,6 +31,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entity.CategoriaProduto;
 import model.entity.Produto;
+import model.services.CategoriaProdutoService;
 import model.services.ProdutoService;
 
 public class ProdutoTablController implements Initializable, DataChargeListener {
@@ -71,7 +72,9 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 	public void onBtCadastrarAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
 		Produto produto = new Produto();
-		createDialogForm(produto, "/gui/ProdutoForm.fxml", parentStage, X -> {
+		createDialogForm(produto, "/gui/ProdutoForm.fxml", parentStage,(ProdutoFormController controller)  -> {
+			controller.setCategoriaProdutoService(new CategoriaProdutoService());
+			controller.updateComboBoxView();
 		});
 	}
 
@@ -156,20 +159,23 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 	}
 
 
+	
+	@SuppressWarnings("unchecked")
 	private <T> void createDialogForm(Produto obj, String absoluteName, Stage parentStage,
 			Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
 
-//			ProdutoFormController controller = loader.getController();
-//
-//			controller.setProduto(obj);
-//			controller.setProdutoService(new ProdutoService());
-//			controller.updateDataForm();
-//			controller.subscribeDataListener(this);
-//
-//			initializingAction.accept((T) controller);
+			ProdutoFormController controller = loader.getController();
+
+			controller.setProduto(obj);
+			controller.setProdutoService(new ProdutoService());
+			controller.updateDataForm();
+			controller.subscribeDataListener(this);
+
+	
+			initializingAction.accept((T) controller);
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Cadastra produto");
@@ -190,14 +196,14 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
 
-//			ProdutoViewController controller = loader.getController();
-//
-//			controller.setProduto(obj);
-//			controller.setProdutoService(new ProdutoService());
-//			controller.updateDataForm();
-//			controller.subscribeDataListener(this);
-//
-//			initializingAction.accept((T) controller);
+			ProdutoViewController controller = loader.getController();
+
+			controller.setProduto(obj);
+			controller.setProdutoService(new ProdutoService());
+			controller.updateDataForm();
+			controller.subscribeDataListener(this);
+
+			initializingAction.accept((T) controller);
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Categoria Produtos");

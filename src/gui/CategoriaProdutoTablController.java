@@ -43,6 +43,9 @@ public class CategoriaProdutoTablController implements Initializable, DataCharge
 	private Button buttonPesquisar;
 
 	@FXML
+	private Button buttonListCategoria;
+
+	@FXML
 	private TextField txfPesquisar;
 
 	@FXML
@@ -66,6 +69,15 @@ public class CategoriaProdutoTablController implements Initializable, DataCharge
 		createDialogForm(categoriaProduto, "/gui/CategoriaProdutoForm.fxml", parentStage, X -> {
 		});
 	}
+	
+	@FXML
+	public void onBtListAction(ActionEvent event) {
+		Stage parentStage = Utils.currentStage(event);
+		CategoriaProduto categoriaProduto = new CategoriaProduto();
+		createDialogList(categoriaProduto, "/gui/CategoriaProdutoList.fxml", parentStage, X -> {
+		});
+	}
+
 
 	@FXML
 	public void onBtPesquisarAction() {
@@ -157,6 +169,34 @@ public class CategoriaProdutoTablController implements Initializable, DataCharge
 			controller.setCategoriaProdutoService(new CategoriaProdutoService());
 			controller.updateDataForm();
 			controller.subscribeDataListener(this);
+
+			initializingAction.accept((T) controller);
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Cadastra categoriaProduto");
+			dialogStage.setScene(new Scene(pane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			Alerts.showAlert("IO Excpetion", "Erro carregando view", e.getMessage(), AlertType.ERROR);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	private <T> void createDialogList(CategoriaProduto obj, String absoluteName, Stage parentStage,
+			Consumer<T> initializingAction) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
+
+			CategoriaProdutoListController controller = loader.getController();
+
+		
+			controller.setCategoriaProdutoService(new CategoriaProdutoService());
+			controller.updateListView();
+
 
 			initializingAction.accept((T) controller);
 

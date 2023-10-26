@@ -75,7 +75,9 @@ public class Produto {
 		return  id + ";" + nome + ";" + valor + ";" + descricao
 				+ ";" + quantidade + ";" + categoria.getId();
 	}
-    
-	
-    
+
+	@Override
+	public String toString() {
+		return nome ;
+	} 
 }

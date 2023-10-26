@@ -29,6 +29,7 @@
                   <Cursor fx:constant="TEXT" />
                </cursor></TextField>
             <Button fx:id="buttonPesquisar" mnemonicParsing="false" onAction="#onBtPesquisarAction" text="Pesquisar" />
+            <Button fx:id="buttonListCategoria" mnemonicParsing="false" onAction="#onBtListAction" text="Lista de produtos" />
         </items>
       </ToolBar>
       <TableView fx:id="tableViewCategoriaProduto" onMouseClicked="#onBtTableLineAction" prefHeight="200.0" prefWidth="200.0">

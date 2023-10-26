@@ -64,7 +64,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <ListView prefHeight="200.0" prefWidth="200.0">
+                  <ListView fx:id="listViewProdutos" prefHeight="200.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets left="10.0" top="5.0" />
                      </VBox.margin>

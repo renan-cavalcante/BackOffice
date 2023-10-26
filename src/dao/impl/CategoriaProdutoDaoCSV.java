@@ -14,9 +14,11 @@ import dao.IArquivoCSV;
 import db.DB;
 import gui.util.Utils;
 import model.entity.CategoriaProduto;
+import model.entity.Produto;
 
 public class CategoriaProdutoDaoCSV implements IArquivoCSV<CategoriaProduto>{
 	
+	private ProdutoDaoCSV daoProduto;
 	private final String NOME = "categoria_produto";
 
 	@Override
@@ -82,13 +84,31 @@ public class CategoriaProdutoDaoCSV implements IArquivoCSV<CategoriaProduto>{
 		
 		while(linha!=null){
 			String[] dados = linha.split(";");
-			list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2]));
+			 if( Utils.classeChamadora() == ProdutoDaoCSV.class.getName()) {
+				 list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2]));
+			 }else {
+				 list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2], relacionamentoCategoriaProduto(dados[0])));
+			 }
+			
 			linha = buffer.readLine();
 		}
 		fluxo.close();
 		leitor.close();
 		buffer.close();
 		return list;
+	}
+	
+	private List<Produto> relacionamentoCategoriaProduto(String id) throws IOException {
+		List<Produto> produtos = new ArrayList<>();
+		
+		
+		setDaoService();
+		for(Produto p : daoProduto.findAll()) {
+			if(p.getCategoria().getId().toString().equals(id)) {
+				produtos.add(p);
+			}
+		}
+		return produtos;
 	}
 
 	@Override
@@ -103,10 +123,16 @@ public class CategoriaProdutoDaoCSV implements IArquivoCSV<CategoriaProduto>{
 		while(linha!=null){
 			String[] dados = linha.split(";");
 			if(id.equals(dados[0])) {
+				CategoriaProduto cp;
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				return (new CategoriaProduto(Utils.tryParseLong(dados[0]),dados[1],dados[2]));
+				 if( Utils.classeChamadora() == ProdutoDaoCSV.class.getName()) {
+					 cp = (new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2]));
+				 }else {
+					 cp = (new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2], relacionamentoCategoriaProduto(dados[0])));
+				 }
+				return (cp);
 			}
 			linha = buffer.readLine();
 		}
@@ -131,7 +157,11 @@ public class CategoriaProdutoDaoCSV implements IArquivoCSV<CategoriaProduto>{
 				fluxo.close();
 				leitor.close();
 				buffer.close();
-				list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2]));
+				if( Utils.classeChamadora() == ProdutoDaoCSV.class.getName()) {
+					 list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2]));
+				 }else {
+					 list.add(new CategoriaProduto(Long.parseLong(dados[0]),dados[1],dados[2], relacionamentoCategoriaProduto(dados[0])));
+				 }
 			}
 			linha = buffer.readLine();
 		}
@@ -140,6 +170,10 @@ public class CategoriaProdutoDaoCSV implements IArquivoCSV<CategoriaProduto>{
 		leitor.close();
 		buffer.close();
 		return list;
+	}
+	
+	public void setDaoService() {
+		daoProduto = new ProdutoDaoCSV();
 	}
 
 	
