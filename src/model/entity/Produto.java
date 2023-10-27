@@ -1,5 +1,7 @@
 package model.entity;
 
+import java.util.Objects;
+
 public class Produto {
 	private Long id;
 	private String nome;
@@ -10,6 +12,15 @@ public class Produto {
     
 	public Produto() {
 		super();
+	}
+	
+	public Produto(Produto p) {
+		id = p.getId();
+		nome = p.getNome();
+		valor = p.getValor();
+		descricao = p.getDescricao();
+		quantidade = 0;
+		categoria = p.getCategoria();
 	}
 
 	public Produto(Long id, String nome, Double valor, String descricao, Integer quantidade, CategoriaProduto categoria) {
@@ -61,6 +72,14 @@ public class Produto {
 	public void setQuantidade(Integer quantidade) {
 		this.quantidade = quantidade;
 	}
+	
+	public void addQuantidade(Integer quantidade) {
+		this.quantidade += quantidade;
+	}
+	
+	public void subQuantidade(Integer quantidade) {
+		this.quantidade -= quantidade;
+	}
 
 	public CategoriaProduto getCategoria() {
 		return categoria;
@@ -78,6 +97,24 @@ public class Produto {
 
 	@Override
 	public String toString() {
-		return nome ;
+		return nome +", " +id ;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		return Objects.equals(id, other.id);
 	} 
+	
 }

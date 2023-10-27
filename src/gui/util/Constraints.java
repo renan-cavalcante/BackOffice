@@ -8,20 +8,32 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import model.entity.Cliente;
+import model.entity.Produto;
 
 public class Constraints {
 
 	public static int tamanhoCpf;
 	private static ObservableList<Cliente> obsList2;
+	private static ObservableList<Produto> obsListProduto;
 	
 	public static void pesquisa(ComboBox<Cliente> cmb, ObservableList<Cliente> obsList) {
 		
 		cmb.getEditor().setOnKeyTyped((KeyEvent event) -> {
 			cmb.hide();
-			System.out.println("digitou");
-			obsList2 = FXCollections.observableArrayList(obsList.stream().filter(
-					cliente -> cliente.getNome().toLowerCase().contains(cmb.getEditor().getText().toLowerCase()))
-					.collect(Collectors.toList()));
+			
+			 if (!cmb.getEditor().getText().matches("\\d.*")) {
+				 obsList2 = FXCollections.observableArrayList(obsList.stream().filter(
+							cliente -> cliente.getNome().toLowerCase().contains(cmb.getEditor().getText().toLowerCase()))
+							.collect(Collectors.toList()));
+				 System.out.println("text");
+			 }else {
+				 obsList2 = FXCollections.observableArrayList(obsList.stream().filter(
+							cliente -> cliente.getId().contains(cmb.getEditor().getText()))
+							.collect(Collectors.toList()));
+				System.out.println("num"); 
+			 }
+			
+			
 			cmb.setItems(obsList2);
 			cmb.show();
 		});
@@ -362,5 +374,30 @@ public class Constraints {
 			}
 		});
 
+	}
+
+
+	public static void pesquisaProduto(ComboBox<Produto> comoBox, ObservableList<Produto> obsListCliente) {
+		
+		comoBox.getEditor().setOnKeyTyped((KeyEvent event) -> {
+			comoBox.hide();
+			
+			 if (!comoBox.getEditor().getText().matches("\\d.*")) {
+				 obsListProduto = FXCollections.observableArrayList(obsListCliente.stream().filter(
+							produto -> produto.getNome().toLowerCase().contains(comoBox.getEditor().getText().toLowerCase()))
+							.collect(Collectors.toList()));
+				 System.out.println("text");
+			 }else {
+				 obsListProduto = FXCollections.observableArrayList(obsListCliente.stream().filter(
+							cliente -> cliente.getId().toString().contains(comoBox.getEditor().getText()))
+							.collect(Collectors.toList()));
+				System.out.println("num"); 
+			 }
+			
+			
+			comoBox.setItems(obsListProduto);
+			comoBox.show();
+		});
+		
 	}
 }

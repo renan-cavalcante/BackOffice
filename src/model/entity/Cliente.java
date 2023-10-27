@@ -53,6 +53,6 @@ public class Cliente extends Usuario{
 
 	@Override
 	public String toString() {
-		return  getNome();
+		return  getNome() + ", " +getId();
 	}
 }
