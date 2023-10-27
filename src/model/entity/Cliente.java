@@ -53,7 +53,6 @@ public class Cliente extends Usuario{
 
 	@Override
 	public String toString() {
-		return "Cliente [endereco=" + endereco + ", contato=" + contato + ", email=" + email + ", getId()=" + getId()
-				+ ", getNome()=" + getNome() + "]";
+		return  getNome();
 	}
 }

@@ -127,10 +127,7 @@ public class ClienteDaoCSV implements IArquivoCSV<Cliente>{
 		
 		while(linha!=null){
 			String[] dados = linha.split(";");
-			if(name.trim().toLowerCase().contains(dados[1])) {
-				fluxo.close();
-				leitor.close();
-				buffer.close();
+			if(dados[1].trim().toLowerCase().contains(name)) {
 				list.add(new Cliente(dados[0], dados[1], new Endereco(Long.parseLong(dados[2]), dados[3], dados[4], dados[5], dados[6]), dados[7]));
 			}
 			linha = buffer.readLine();

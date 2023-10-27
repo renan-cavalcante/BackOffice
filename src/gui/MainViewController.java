@@ -61,7 +61,24 @@ public class MainViewController implements Initializable {
 	}
 	
 	@FXML
-	public void onMenuItemLoginAction() {
+	public void onMenuItemLancaVendaAction() {
+		loadView("/gui/CarrinhoPage.fxml", (CarrinhoPageController controller) -> {
+			controller.setClienteService(new ClienteService());
+			controller.setProdutoService(new ProdutoService());
+			controller.updateComboBoxClientePesquisa();
+			controller.updateComboBoxProdutoPesquisa();
+		}
+		);
+		
+	}
+	
+	@FXML
+	public void onMenuItemVendasAction() {
+		
+	}
+	
+	@FXML
+	public void onMenuItemCarrinhoAction() {
 		
 	}
 	
