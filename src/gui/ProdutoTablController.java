@@ -190,6 +190,7 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 	}
 
 
+	@SuppressWarnings("unchecked")
 	private <T> void createDialogView(Produto obj, String absoluteName, Stage parentStage,
 			Consumer<T> initializingAction) {
 		try {
