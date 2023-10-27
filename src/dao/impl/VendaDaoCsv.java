@@ -29,6 +29,7 @@ public class VendaDaoCsv implements IArquivoCSV<Venda> {
 		FileWriter fileWriter = new FileWriter(arquivo, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		conteudo.setId(DB.getSequencia("vendaSequenci"));
+		System.out.println("insertVenda");
 		relacionamentoVendaProdutoInsert(conteudo);
 		printWriter.write(conteudo.toStringCsv() + "\r\n");
 		printWriter.close();
@@ -39,7 +40,6 @@ public class VendaDaoCsv implements IArquivoCSV<Venda> {
 	private void relacionamentoVendaProdutoInsert(Venda venda) throws Exception {
 		
 		Pilha<Produto> produtos = venda.getProdutos();
-		
 		while(!produtos.isEmpty()) {
 			String[] conteudo = new String[3];
 			conteudo[0] = venda.getId().toString();
