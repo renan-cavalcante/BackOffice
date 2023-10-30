@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="488.0" prefWidth="642.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProdutoViewController">
+   <children>
+      <ScrollPane prefHeight="489.0" prefWidth="642.0">
+         <content>
+            <VBox prefHeight="478.0" prefWidth="603.0">
+               <children>
+                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Id:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Label>
+                        <Label fx:id="labelId" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="26.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Nome:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></Label>
+                        <Label fx:id="labelNome" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Valor:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="labelValor" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label text="Quantidade">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="labelQuantidade" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="25.0" prefWidth="593.0" spacing="5.0">
+                     <children>
+                        <Label text="Categoria:">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="labelCategoria">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                     <children>
+                        <Label fx:id="labelContato11" text="Descrição">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <TextArea fx:id="txtAreaDescricao" editable="false" prefHeight="200.0" prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextArea>
+                  <AnchorPane prefHeight="72.0" prefWidth="603.0">
+                     <children>
+                        <ButtonBar prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="10.0">
+                           <buttons>
+                              <Button fx:id="btnEditar" mnemonicParsing="false" onAction="#onBtnEditar" text="Editar" />
+                              <Button fx:id="btnExcluir" mnemonicParsing="false" onAction="#onBtnExcluir" text="Excluir" />
+                           </buttons>
+                        </ButtonBar>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
