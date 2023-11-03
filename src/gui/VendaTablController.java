@@ -198,19 +198,22 @@ public class VendaTablController implements Initializable, DataChargeListener {
 		obsList = FXCollections.<Map<String, String>>observableArrayList();
 		try {
 			for (Venda v : list) {
-				Map<String, String> venda = new HashMap<>();
-				venda.put("id", v.getId().toString());
-				venda.put("nome", v.getCliente().getNome());
-				venda.put("valor", v.getValor().toString());
-				Pilha<Produto> aux = v.getProdutos().clonar();
-				Integer itens = 0;
-				while (!aux.isEmpty()) {
-					itens += aux.pop().getQuantidade();
-				}
-				venda.put("quantidade", itens.toString());
-				vendas.add(venda);
+				if(v != null) {
+					Map<String, String> venda = new HashMap<>();
+					venda.put("id", v.getId().toString());
+					venda.put("nome", v.getCliente().getNome());
+					venda.put("valor", v.getValor().toString());
+					Pilha<Produto> aux = v.getProdutos().clonar();
+					Integer itens = 0;
+					while (!aux.isEmpty()) {
+						itens += aux.pop().getQuantidade();
+					}
+					venda.put("quantidade", itens.toString());
+					vendas.add(venda);
 
-				obsList.add(venda);
+					obsList.add(venda);
+				}
+				
 			}
 
 			tableViewVenda.setItems(obsList);

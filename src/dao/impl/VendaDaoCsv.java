@@ -1,12 +1,6 @@
 package dao.impl;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,56 +15,40 @@ public class VendaDaoCsv implements IArquivoCSV<Venda> {
 	private final String NOME = "venda";
 	private VendaProdutoDaoCsv dao = new VendaProdutoDaoCsv();
 	private ClienteDaoCSV daoCliente = new ClienteDaoCSV();
-	private ProdutoDaoCSV daoProduto = new ProdutoDaoCSV();
+	private DB banco = new DB();
 
 	@Override
-	public void insert(Venda conteudo) throws Exception  {
-		File arquivo = DB.getArquivo(NOME);
-		FileWriter fileWriter = new FileWriter(arquivo, true);
-		PrintWriter printWriter = new PrintWriter(fileWriter);
-		conteudo.setId(DB.getSequencia("vendaSequenci"));
-		relacionamentoVendaProdutoInsert(conteudo);
-		printWriter.write(conteudo.toStringCsv() + "\r\n");
-		printWriter.close();
-		fileWriter.close();
+	public void insert(Venda conteudo) throws Exception {
 
+		conteudo.setId(banco.getSequencia("vendaSequenci"));
+		relacionamentoVendaProdutoInsert(conteudo);
+		banco.escrever(conteudo.toStringCsv(), NOME);
 	}
 
 	private void relacionamentoVendaProdutoInsert(Venda venda) throws Exception {
-		
 		Pilha<Produto> produtos = venda.getProdutos();
-		while(!produtos.isEmpty()) {
+		while (!produtos.isEmpty()) {
 			String[] conteudo = new String[3];
 			conteudo[0] = venda.getId().toString();
 			conteudo[1] = produtos.top().getId().toString();
 			conteudo[2] = produtos.pop().getQuantidade().toString();
 			dao.insert(conteudo);
 		}
-		
+
 	}
 
 	@Override
 	public void delete(String id) throws IOException {
-		List<Venda> list = findAll();
-		File arquivo = DB.getArquivo(NOME);
-		FileWriter fileWriter = new FileWriter(arquivo, false);
-		PrintWriter printWriter = new PrintWriter(fileWriter);
-		for (Venda v : list) {
-			if (!id.equals(v.getId().toString())) {
-				printWriter.write(v.toStringCsv() + "\r\n");
-			}else {
-				dao.delete(id);
-			}
-
+		Venda venda = findById(id);
+		if (venda != null) {
+			venda.setAtivo(false);
+			update(venda);
 		}
-		printWriter.close();
-		fileWriter.close();
-
 	}
 
 	@Override
 	public void update(Venda conteudo) throws IOException {
-		List<Venda> list = findAll();
+		List<Venda> list = findAllAtivo();
 
 		int tamanho = list.size();
 		for (int i = 0; i < tamanho; i++) {
@@ -81,105 +59,65 @@ public class VendaDaoCsv implements IArquivoCSV<Venda> {
 			}
 
 		}
-		File arquivo = DB.getArquivo(NOME);
-		FileWriter fileWriter = new FileWriter(arquivo, false);
-		PrintWriter printWriter = new PrintWriter(fileWriter);
-		for (Venda v : list) {
-			printWriter.write(v.toStringCsv() + "\r\n");
+		String[] dados = new String[list.size()];
+		for (int i = 0; i < tamanho; i++) {
+			dados[i] = list.get(i).toStringCsv();
 		}
-		printWriter.close();
-		fileWriter.close();
-
+		banco.sobrescrever(dados, NOME);
 	}
 
-	@Override
-	public List<Venda> findAll() throws IOException {
+	public List<Venda> findAllAtivo() throws IOException {
 		List<Venda> list = new ArrayList<>();
-		File arquivo = DB.getArquivo(NOME);
-		FileInputStream fluxo = new FileInputStream(arquivo);
-		InputStreamReader leitor = new InputStreamReader(fluxo);
-		BufferedReader buffer = new BufferedReader(leitor);
-		String linha = buffer.readLine();
+		List<String> vendas = banco.ler(NOME);
 
-		while (linha != null) {
-			String[] dados = linha.split(";");
-			Pilha<Produto> produtos = new Pilha<>();
-			
-			List<String[]> produtosCsv = dao.findById(dados[0]);
-			for(String[] s : produtosCsv) {
-				Produto produto = daoProduto.findById(s[1]);
-				produto.setQuantidade(Utils.tryParseInt(s[2]));
-				produtos.push(produto);
-			}
-			list.add(new Venda(Utils.tryParseLong(dados[0]),daoCliente.findById(dados[1]),produtos,Utils.tryParseDouble(dados[2])));
-			linha = buffer.readLine();
+		for (String s : vendas) {
+			String[] dados = s.split(";");
+			Pilha<Produto> produtos = dao.findProdutosVenda(dados[0]);
+
+			list.add(new Venda(Utils.tryParseLong(dados[0]), daoCliente.findByIdAll(dados[1]), produtos,
+					Utils.tryParseDouble(dados[2]), Boolean.parseBoolean(dados[3])));
+
 		}
-		fluxo.close();
-		leitor.close();
-		buffer.close();
+
 		return list;
 	}
 
 	@Override
-	public Venda findById(String id) throws IOException {
-		File arquivo = DB.getArquivo(NOME);
-		FileInputStream fluxo = new FileInputStream(arquivo);
-		InputStreamReader leitor = new InputStreamReader(fluxo);
-		BufferedReader buffer = new BufferedReader(leitor);
-		String linha = buffer.readLine();
+	public List<Venda> findAll() throws IOException {
+		List<Venda> list = findAllAtivo();
+		List<Venda> vendas = new ArrayList<>();
 
-		while (linha != null) {
-			String[] dados = linha.split(";");
-			if (id.trim().equals(dados[0])) {
-				fluxo.close();
-				leitor.close();
-				buffer.close();
-				Pilha<Produto> produtos = new Pilha<>();
-				
-				List<String[]> produtosCsv = dao.findById(dados[0]);
-				for(String[] s : produtosCsv) {
-					Produto produto = daoProduto.findById(s[1]);
-					produto.setQuantidade(Utils.tryParseInt(s[2]));
-					produtos.push(produto);
-				}
-				return(new Venda(Utils.tryParseLong(dados[0]),daoCliente.findById(dados[1]),produtos,Utils.tryParseDouble(dados[2])));
-		
+		for (Venda v : list) {
+
+			if (v.isAtivo()) {
+				vendas.add(v);
 			}
-			linha = buffer.readLine();
 		}
-		fluxo.close();
-		leitor.close();
-		buffer.close();
+		return vendas;
+	}
+
+	@Override
+	public Venda findById(String id) throws IOException {
+		List<Venda> vendas = findAll();
+
+		for (Venda v : vendas) {
+			if (v.getId().toString().equals(id)) {
+				return (v);
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public List<Venda> findByName(String name) throws IOException {
+		List<Venda> vendas = findAll();
 		List<Venda> list = new ArrayList<>();
-		File arquivo = DB.getArquivo(NOME);
-		FileInputStream fluxo = new FileInputStream(arquivo);
-		InputStreamReader leitor = new InputStreamReader(fluxo);
-		BufferedReader buffer = new BufferedReader(leitor);
-		String linha = buffer.readLine();
 
-		while (linha != null) {
-			String[] dados = linha.split(";");
-			if (dados[1].trim().toLowerCase().contains(name)) {
-				Pilha<Produto> produtos = new Pilha<>();
-				
-				List<String[]> produtosCsv = dao.findById(dados[0]);
-				for(String[] s : produtosCsv) {
-					Produto produto = daoProduto.findById(s[1]);
-					produto.setQuantidade(Utils.tryParseInt(s[2]));
-					produtos.push(produto);
-				}
-				list.add(new Venda(Utils.tryParseLong(dados[0]),daoCliente.findById(dados[1]),produtos,Utils.tryParseDouble(dados[2])));
+		for (Venda v : vendas) {
+			if (v.getCliente().getNome().toLowerCase().contains(name)) {
+				list.add(v);
 			}
-			linha = buffer.readLine();
 		}
-		fluxo.close();
-		leitor.close();
-		buffer.close();
 		return list;
 	}
 

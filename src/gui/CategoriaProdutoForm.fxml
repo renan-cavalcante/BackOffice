@@ -35,6 +35,7 @@
             <TextField fx:id="txtNome" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="lbErroNome" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label fx:id="lbErroDescricao" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextArea fx:id="txtAreaDescricao" prefHeight="118.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
                   <Button fx:id="btSalvar" mnemonicParsing="false" onAction="#onBtSalvarAction" text="Salvar">
@@ -49,7 +50,6 @@
                   </Button>
                </children>
             </HBox>
-            <TextArea fx:id="txtAreaDescricao" prefHeight="118.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

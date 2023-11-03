@@ -7,10 +7,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DB {
 	
-	public static File getArquivo(String nome) throws IOException {
+	public  File getArquivo(String nome) throws IOException {
 		File arquivo = new File( getDir() + "\\"+nome +".csv");
 		if(!arquivo.exists() || !arquivo.isFile()) {
 			arquivo.createNewFile();
@@ -18,7 +20,7 @@ public class DB {
 		return arquivo;	
 	}
 	
-	public static File getArquivoTxt(String nome) throws IOException {
+	public  File getArquivoTxt(String nome) throws IOException {
 		File arquivo = new File( getDir() + "\\"+nome +".txt");
 		if(!arquivo.exists() || !arquivo.isFile()) {
 			arquivo.createNewFile();
@@ -33,7 +35,7 @@ public class DB {
 		return arquivo;	
 	}
 	
-	public static String getDir() {
+	public  String getDir() {
 		String execucao = System.getProperty("user.dir");
 		File dir = new File(execucao+"\\dados");
 		if(!dir.exists() || !dir.isDirectory()) {
@@ -42,8 +44,8 @@ public class DB {
 		return dir.getPath();	
 	}
 	
-	public static Long getSequencia(String arqSeq) throws IOException {
-		File arquivo = DB.getArquivoTxt(arqSeq);
+	public  Long getSequencia(String arqSeq) throws IOException {
+		File arquivo = getArquivoTxt(arqSeq);
 		FileInputStream fluxo = new FileInputStream(arquivo);
 		InputStreamReader leitor = new InputStreamReader(fluxo);
 		BufferedReader buffer = new BufferedReader(leitor);
@@ -57,13 +59,52 @@ public class DB {
 		
 	}
 	
-	private static void addSequencia(String arqSeq, String numero) throws IOException {
-		File arquivo = DB.getArquivoTxt(arqSeq);
+	private  void addSequencia(String arqSeq, String numero) throws IOException {
+		File arquivo = getArquivoTxt(arqSeq);
 		FileWriter fileWriter = new FileWriter(arquivo);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		printWriter.write(numero);
 		printWriter.close();
 		fileWriter.close();
+	}
+	
+	public  void escrever(String dados, String arquivo) throws IOException {
+		File caminho = getArquivo(arquivo);
+		FileWriter fileWriter = new FileWriter(caminho, true);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+		printWriter.write(dados+ "\r\n");
+		printWriter.close();
+		fileWriter.close();
+	}
+	
+	public  void sobrescrever(String[] dados, String arquivo) throws IOException {
+		File caminho = getArquivo(arquivo);
+		FileWriter fileWriter = new FileWriter(caminho, false);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+		for(String s : dados) {
+			printWriter.write(s+ "\r\n");
+		}
+		printWriter.close();
+		fileWriter.close();
+	}
+	
+	public  List<String> ler(String arquivo) throws IOException {
+		List<String> dados = new ArrayList<>();
+		File caminho = getArquivo(arquivo);
+		FileInputStream fluxo = new FileInputStream(caminho);
+		InputStreamReader leitor = new InputStreamReader(fluxo);
+		BufferedReader buffer = new BufferedReader(leitor);
+		String linha = buffer.readLine();
+		
+		while (linha != null) {
+			dados.add(linha);
+			linha = buffer.readLine();
+		}
+		fluxo.close();
+		leitor.close();
+		buffer.close();
+		return dados;
+		
 	}
 
 }

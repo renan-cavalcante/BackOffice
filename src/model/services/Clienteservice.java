@@ -18,10 +18,10 @@ public class ClienteService {
 	
 	public Cliente saveOrUpdate(Cliente cliente) throws IOException {
 		if(dao.findById(cliente.getId()) != null) {
-			return dao.update2(cliente);
+			return dao.update(cliente);
 			
 		}
-		return dao.insert2(cliente);
+		return dao.insert(cliente);
 	}
 	
 	public void remove(Cliente cliente) throws IOException {

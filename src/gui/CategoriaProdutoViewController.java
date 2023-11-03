@@ -91,6 +91,10 @@ public class CategoriaProdutoViewController implements Initializable {
 				Alerts.showAlert("Erro", "Erro ao deletar o cliente", e.getMessage(), AlertType.ERROR);
 				e.printStackTrace();
 			}
+			catch (IllegalArgumentException e) {
+				Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
+				e.printStackTrace();
+			}
 		}
 	}
 

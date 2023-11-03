@@ -104,6 +104,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 
 	/**
 	 * Exibe tela de cadastro de cliente
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -137,13 +138,15 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 				labelContato.setText(carrinho.getCliente().getContato());
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 				Alerts.showAlert("Erro", "Erro ao inserir cliente", e.getMessage(), AlertType.ERROR);
 			} catch (InvalidAttributesException e) {
-				// TODO Auto-generated catch block
+				Alerts.showAlert("Erro", "Erro ao inserir cliente", e.getMessage(), AlertType.ERROR);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				Alerts.showAlert("Erro", null, "Selecione um  cliente", AlertType.ERROR);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
+
 		}
 
 	}
@@ -154,19 +157,19 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 	@FXML
 	public void btnOnInserirProduto() {
 		try {
-			if (comoBoxProduto.getSelectionModel().getSelectedItem() != null) {
 
-				String[] dadosProduto = comoBoxProduto.getEditor().getText().split(",");
-				Produto p = new Produto(produtoService.findById(dadosProduto[1]));
-				p.addQuantidade(Utils.tryParseInt(txtQuantidade.getText()));
-				carrinho.addProdutos(p);
-
-			}
+			String[] dadosProduto = comoBoxProduto.getEditor().getText().split(",");
+			Produto p = new Produto(produtoService.findById(dadosProduto[1]));
+			p.addQuantidade(Utils.tryParseInt(txtQuantidade.getText()));
+			carrinho.addProdutos(p);
 			updateTableViewProduto();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		} catch (IOException e) {
 			Alerts.showAlert("Erro", "Erro ao inserir cliente", e.getMessage(), AlertType.ERROR);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			Alerts.showAlert("Erro", null, "Selecione um produto", AlertType.ERROR);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}

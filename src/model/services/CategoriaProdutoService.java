@@ -24,7 +24,7 @@ public class CategoriaProdutoService {
 		dao.insert(categoriaProduto);
 	}
 	
-	public void remove(CategoriaProduto categoriaProduto) throws IOException {
+	public void remove(CategoriaProduto categoriaProduto) throws IOException, IllegalArgumentException {
 		dao.delete(categoriaProduto.getId()+"");
 	}
 	

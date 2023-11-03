@@ -12,12 +12,14 @@ public class Venda {
 	
 	public Venda() {
 		super();
+		this.ativo = true;
 	}
 	
 	public Venda(Carrinho c) {
 		cliente = c.getCliente();
 		produtos = c.getProdutos();
 		valor = c.calcularTotal();
+		this.ativo = true;
 	}
 
 
@@ -63,7 +65,7 @@ public class Venda {
 	}
 
 	public String toStringCsv() {
-		return  id +";"+ cliente.getId()+";"+ valor+"ativo";
+		return  id +";"+ cliente.getId()+";"+ valor+";"+ativo;
 	}
 
 	public boolean isAtivo() {

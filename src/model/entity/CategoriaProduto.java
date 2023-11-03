@@ -9,26 +9,30 @@ public class CategoriaProduto {
 	private String nome;
 	private String descricao;
 	private List<Produto> produtos = new ArrayList<>();
+	private boolean ativo;
 
-	public CategoriaProduto(Long id, String nome, String descricao) {
+	public CategoriaProduto(Long id, String nome, String descricao, boolean ativo) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
+		this.ativo = ativo;
 	}
 	
 
-	public CategoriaProduto(Long id, String nome, String descricao, List<Produto> produtos) {
+	public CategoriaProduto(Long id, String nome, String descricao, List<Produto> produtos, boolean ativo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.produtos = produtos;
+		this.ativo = ativo;
 	}
 
 
 
 	public CategoriaProduto() {
 		super();
+		ativo = true;
 	}
 	
 	public Long getId() {
@@ -56,7 +60,7 @@ public class CategoriaProduto {
 	}
 	
 	public String toStringCsv() {
-		return  id + ";" + nome + ";" + descricao;
+		return  id + ";" + nome + ";" + descricao+";"+ativo;
 	}
 
 	@Override
@@ -91,5 +95,15 @@ public class CategoriaProduto {
 	
 	public void removeProdutos(Produto produto) {
 		produtos.remove(produto);
+	}
+
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

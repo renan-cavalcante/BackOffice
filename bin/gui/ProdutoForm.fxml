@@ -37,8 +37,12 @@
             <Label text="Descrição" GridPane.rowIndex="5" />
             <TextField fx:id="txtId" disable="true" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" GridPane.columnIndex="1" />
             <TextField fx:id="txtNome" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="txtValor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="64.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="txtQuantidade" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <ComboBox fx:id="cbxCategoria" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label fx:id="lbErroNome" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Label fx:id="lbErroDescricao" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <TextArea fx:id="txtAreaDescricao" prefHeight="118.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <HBox prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
                   <Button fx:id="btSalvar" mnemonicParsing="false" onAction="#onBtSalvarAction" text="Salvar">
@@ -53,13 +57,12 @@
                   </Button>
                </children>
             </HBox>
-            <TextArea fx:id="txtAreaDescricao" prefHeight="118.0" prefWidth="266.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label text="Valor:" GridPane.rowIndex="2" />
             <Label text="Quantidade" GridPane.rowIndex="3" />
             <Label text="Categoria" GridPane.rowIndex="4" />
-            <ComboBox fx:id="cbxCategoria" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="txtValor" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="64.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="txtQuantidade" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="47.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="lbErroValor" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="lbErroQuantidade" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label fx:id="lbErroCategoria" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </children>

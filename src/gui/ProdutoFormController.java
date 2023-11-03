@@ -10,6 +10,7 @@ import java.util.Set;
 
 import gui.listeners.DataChargeListener;
 import gui.util.Alerts;
+import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,8 +57,18 @@ public class ProdutoFormController implements Initializable {
 
 	@FXML
 	private Label lbErroNome;
+	
 	@FXML
 	private Label lbErroDescricao;
+	
+	@FXML
+	private Label lbErroValor;
+	
+	@FXML
+	private Label lbErroQuantidade;
+	
+	@FXML
+	private Label lbErroCategoria;
 
 	@FXML
 	private Button btSalvar;
@@ -96,6 +107,7 @@ public class ProdutoFormController implements Initializable {
 	@FXML
 	public void onBtSalvarAction(ActionEvent event) {
 		try {
+			clearErro();
 			produto = getFormData();
 			service.saveOrUpdate(produto);
 			notifyDataChangeListeners();
@@ -146,6 +158,13 @@ public class ProdutoFormController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
+		initizalizeNode();
+	}
+	
+	private void initizalizeNode() {
+		Constraints.setTextFieldInteger(txtQuantidade);
+		
+		Constraints.setTextFieldDouble(txtValor);
 	}
 
 
@@ -177,13 +196,17 @@ public class ProdutoFormController implements Initializable {
 	private Produto getFormData() {
 		Produto produto = new Produto();
 		CategoriaProduto categoriaProduto = cbxCategoria.getValue();
-
+		String valor = txtValor.getText();
+		if(valor.contains(",")) {
+			String[] separar = valor.split("\\,");
+			valor = separar[0]+"."+separar[1];	
+		}
 		ValidationException exception = new ValidationException("Validação erros");
 		validacao(exception);
 
 		produto.setId(Utils.tryParseLong(txtId.getText()));
 		produto.setNome(txtNome.getText());
-		produto.setValor(Utils.tryParseDouble(txtValor.getText()));
+		produto.setValor(Utils.tryParseDouble(valor));
 		produto.setQuantidade(Utils.tryParseInt(txtQuantidade.getText()));
 		produto.setDescricao(txtAreaDescricao.getText());
 		produto.setCategoria(categoriaProduto);
@@ -204,6 +227,11 @@ public class ProdutoFormController implements Initializable {
 		validarVazio(txtNome, ve, "nome");
 		if (txtAreaDescricao.getText() == null || txtAreaDescricao.getText().trim().equals("")) {
 			ve.addErro("descricao", "Descrição não pode ser vazia");
+		}
+		validarVazio(txtValor, ve, "valor");
+		validarVazio(txtQuantidade, ve, "quantidade");
+		if(cbxCategoria.getSelectionModel().getSelectedIndex() < 0) {
+			ve.addErro("categoria", "Selecione uma categoria");
 		}
 
 	}
@@ -235,6 +263,23 @@ public class ProdutoFormController implements Initializable {
 		if (fields.contains("descricao")) {
 			lbErroDescricao.setText(erros.get("descricao"));
 		}
+		if (fields.contains("valor")) {
+			lbErroValor.setText(erros.get("valor"));
+		}
+		if (fields.contains("quantidade")) {
+			lbErroQuantidade.setText(erros.get("quantidade"));
+		}
+		if (fields.contains("categoria")) {
+			lbErroCategoria.setText(erros.get("categoria"));
+		}
 
+	}
+	
+	private void clearErro() {
+		lbErroCategoria.setText("");
+		lbErroDescricao.setText("");
+		lbErroNome.setText("");
+		lbErroQuantidade.setText("");
+		lbErroValor.setText("");
 	}
 }

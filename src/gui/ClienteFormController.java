@@ -111,7 +111,7 @@ public class ClienteFormController implements Initializable {
 	@FXML
 	public void onBtSalvarAction(ActionEvent event) {
 		try {
-			
+			clearErro();
 			cliente = getFormData();
 			cliente = service.saveOrUpdate(cliente);
 			
@@ -296,6 +296,15 @@ public class ClienteFormController implements Initializable {
 	public void bloquearCpfCnpj() {
 		txtCpfCnpj.setDisable(true);
 		txtCpfCnpj.setEditable(false);
+	}
+	
+	private void clearErro() {
+		lbErrorContato.setText("");
+		lbErrorCpfCnpj.setText("");
+		lbErrorEmail.setText("");
+		lbErrorNome.setText("");
+		lbErrorRua.setText("");
+		lbErrorCep.setText("");
 	}
 
 }

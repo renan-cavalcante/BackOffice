@@ -9,9 +9,11 @@ public class Produto {
 	private String descricao;
 	private Integer quantidade;
     private CategoriaProduto categoria;
+    private boolean ativo;
     
 	public Produto() {
 		super();
+		ativo = true;
 	}
 	
 	public Produto(Produto p) {
@@ -21,9 +23,10 @@ public class Produto {
 		descricao = p.getDescricao();
 		quantidade = 0;
 		categoria = p.getCategoria();
+		ativo = true;
 	}
 
-	public Produto(Long id, String nome, Double valor, String descricao, Integer quantidade, CategoriaProduto categoria) {
+	public Produto(Long id, String nome, Double valor, String descricao, Integer quantidade, CategoriaProduto categoria, Boolean ativo) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -31,6 +34,7 @@ public class Produto {
 		this.descricao = descricao;
 		this.quantidade = quantidade;
 		this.categoria = categoria;
+		this.ativo = ativo;
 	}
 
 	public Long getId() {
@@ -92,7 +96,7 @@ public class Produto {
 	
 	public String toStringCsv() {
 		return  id + ";" + nome + ";" + valor + ";" + descricao
-				+ ";" + quantidade + ";" + categoria.getId();
+				+ ";" + quantidade + ";" + categoria.getId()+";"+ativo;
 	}
 
 	@Override
@@ -115,6 +119,14 @@ public class Produto {
 			return false;
 		Produto other = (Produto) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	} 
 	
 }

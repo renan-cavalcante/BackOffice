@@ -75,6 +75,7 @@ public class CategoriaProdutoFormController implements Initializable {
 	@FXML
 	public void onBtSalvarAction(ActionEvent event) {
 		try {
+			clearErro();
 			categoriaProduto = getFormData();
 			service.saveOrUpdate(categoriaProduto);
 			notifyDataChangeListeners();
@@ -181,5 +182,10 @@ public class CategoriaProdutoFormController implements Initializable {
 			lbErroDescricao.setText(erros.get("descricao"));
 		}
 
+	}
+	
+	private void clearErro() {
+		lbErroDescricao.setText("");
+		lbErroNome.setText("");
 	}
 }
