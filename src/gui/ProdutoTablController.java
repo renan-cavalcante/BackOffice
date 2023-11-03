@@ -37,6 +37,7 @@ import model.services.ProdutoService;
 public class ProdutoTablController implements Initializable, DataChargeListener {
 
 	private ProdutoService produtoService;
+	private ObservableList<Produto> obsList;
 
 	@FXML
 	private Button buttonCadastrar;
@@ -58,26 +59,42 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 
 	@FXML
 	private TableColumn<Produto, Double> tableColumnValor;
-	
+
 	@FXML
 	private TableColumn<Produto, Integer> tableColumnQuantidade;
+
 	@FXML
 	private TableColumn<Produto, String> tableColumnDescricao;
+
 	@FXML
 	private TableColumn<Produto, CategoriaProduto> tableColumnCategoria;
 
-	private ObservableList<Produto> obsList;
-
+	/**
+	 * Cria um form para cadastra novo Produto
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void onBtCadastrarAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
 		Produto produto = new Produto();
-		createDialogForm(produto, "/gui/ProdutoForm.fxml", parentStage,(ProdutoFormController controller)  -> {
+		createDialogForm("Cadastra produto", "/gui/ProdutoForm.fxml", parentStage, (ProdutoFormController controller) -> {
+			controller.setProduto(produto);
+			controller.setProdutoService(new ProdutoService());
+			controller.updateDataForm();
+			controller.subscribeDataListener(this);
 			controller.setCategoriaProdutoService(new CategoriaProdutoService());
 			controller.updateComboBoxView();
 		});
 	}
 
+	/**
+	 * Pega os dados inseridos no textField de pesquisa e busca correlação no banco
+	 * de dados por id (Retorna apenas 1 Produto) ou nome( Retornar todos que
+	 * atendam a pesquisa) e atualiza a tabela de com os dados encontrados
+	 * 
+	 * @throws IOException
+	 */
 	@FXML
 	public void onBtPesquisarAction() {
 		List<Produto> produtos = new ArrayList<Produto>();
@@ -90,15 +107,21 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 				} else {
 					produtos = (produtoService.pesquisaPorNome(textoPesquisa));
 				}
+				if(textoPesquisa.isBlank() || textoPesquisa.isEmpty()){
+					produtos = produtoService.findAll();
+				}
 			} catch (IOException e) {
 				Alerts.showAlert("Erro", "Erro ao pesquisar", e.getMessage(), AlertType.ERROR);
 				e.printStackTrace();
 			}
 		}
 		updateTableView(produtos);
-
 	}
-	
+
+	/**
+	 * Abre form de view do produto selecionado na tabela
+	 * @param event
+	 */
 	@FXML
 	public void onBtTableLineAction(MouseEvent event) {
 
@@ -107,9 +130,14 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 		int indice = tbv.getSelectedIndex();
 		if (indice >= 0) {
 			Produto categoria = (Produto) tableViewProduto.getItems().get(indice);
-			createDialogView(categoria, "/gui/produtoView.fxml", Utils.currentStage(event),
-//					(ProdutoViewController controller) -> {});
-					(X ) -> {});
+			createDialogForm("Categoria Produtos", "/gui/produtoView.fxml", Utils.currentStage(event),
+					(ProdutoViewController controller) -> {
+						controller.setProduto(categoria);
+						controller.setProdutoService(new ProdutoService());
+						controller.updateDataForm();
+						controller.subscribeDataListener(this);
+					});
+					
 		}
 
 		tbv.clearSelection();
@@ -124,6 +152,9 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 		initializeNodes();
 	}
 
+	/**
+	 * Inicializa as colunas da tabela
+	 */
 	private void initializeNodes() {
 
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -132,12 +163,17 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 		tableColumnValor.setCellValueFactory(new PropertyValueFactory<>("valor"));
 		tableColumnQuantidade.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 		tableColumnCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-		
+
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewProduto.prefHeightProperty().bind(stage.heightProperty());
 
 	}
 
+	/**
+	 * atualiza a tabela com os dados dos produtos salvos
+	 * 
+	 * @throws IOException
+	 */
 	public void updateTableView() {
 		List<Produto> list;
 		try {
@@ -151,6 +187,11 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 		}
 	}
 
+	/**
+	 * Atualiza os dados da tabela com a lista de Produtos passada
+	 * 
+	 * @param list : lista de Produtos
+	 */
 	public void updateTableView(List<Produto> list) {
 
 		obsList = FXCollections.observableArrayList(list);
@@ -158,27 +199,30 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 
 	}
 
-
-	
-	@SuppressWarnings("unchecked")
-	private <T> void createDialogForm(Produto obj, String absoluteName, Stage parentStage,
+	/**
+	 * Cria um form de acordo com absoluteName definido
+	 * @param <T>
+	 * @param titulo: titulo do form
+	 * @param absoluteName: caminho do arquivo FXML do form 
+	 * @param parentStage: Stage da tela principal
+	 * @param initializingAction: consumer com funçoes do controller para serem iniciadas no form
+	 * 
+	 * @throws IOException
+	 */
+	private <T> void createDialogForm(String titulo, String absoluteName, Stage parentStage,
 			Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
 
-			ProdutoFormController controller = loader.getController();
+			T controller = loader.getController();
 
-			controller.setProduto(obj);
-			controller.setProdutoService(new ProdutoService());
-			controller.updateDataForm();
-			controller.subscribeDataListener(this);
+			
 
-	
-			initializingAction.accept((T) controller);
+			initializingAction.accept( controller);
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Cadastra produto");
+			dialogStage.setTitle(titulo);
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
@@ -189,35 +233,9 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 		}
 	}
 
-
-	@SuppressWarnings("unchecked")
-	private <T> void createDialogView(Produto obj, String absoluteName, Stage parentStage,
-			Consumer<T> initializingAction) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			Pane pane = loader.load();
-
-			ProdutoViewController controller = loader.getController();
-
-			controller.setProduto(obj);
-			controller.setProdutoService(new ProdutoService());
-			controller.updateDataForm();
-			controller.subscribeDataListener(this);
-
-			initializingAction.accept((T) controller);
-
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Categoria Produtos");
-			dialogStage.setScene(new Scene(pane));
-			dialogStage.setResizable(false);
-			dialogStage.initOwner(parentStage);
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.showAndWait();
-		} catch (IOException e) {
-			Alerts.showAlert("IO Excpetion", "Erro carregando view", e.getMessage(), AlertType.ERROR);
-		}
-	}
-
+	/**
+	 * listener para quando um form alterar dados de CategoriaProduto, atualizar a tabela de produtos
+	 */
 	@Override
 	public void onDataChanged() {
 		updateTableView();

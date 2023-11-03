@@ -111,8 +111,10 @@ public class ClienteFormController implements Initializable {
 	@FXML
 	public void onBtSalvarAction(ActionEvent event) {
 		try {
+			
 			cliente = getFormData();
-			service.saveOrUpdate(cliente);
+			cliente = service.saveOrUpdate(cliente);
+			
 			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
 
@@ -126,7 +128,11 @@ public class ClienteFormController implements Initializable {
 
 	private void notifyDataChangeListeners() {
 		for (DataChargeListener listener : listeners) {
+			if (listener instanceof CarrinhoPageController) {
+				CarrinhoPageController.setCliente(cliente);	
+			}
 			listener.onDataChanged();
+
 		}
 	}
 
@@ -214,6 +220,7 @@ public class ClienteFormController implements Initializable {
 
 		if (exception.getErros().size() > 0) {
 			throw exception;
+			
 		}
 		return cliente;
 	}
@@ -222,7 +229,6 @@ public class ClienteFormController implements Initializable {
 		if (rbtPessoaFisica.isSelected()) {
 			validarTamanho(txtCpfCnpj, ve, "cpf", 14);
 			validarTamanho(txtContato, ve, "celular", 14);
-			ve.addErro("CpfCnpj", "CPF invalido");
 		}
 
 		

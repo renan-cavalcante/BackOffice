@@ -31,7 +31,6 @@ public class CategoriaProdutoFormController implements Initializable {
 
 	private List<DataChargeListener> listeners = new ArrayList<>();
 
-
 	@FXML
 	private TextField txtId;
 
@@ -40,9 +39,12 @@ public class CategoriaProdutoFormController implements Initializable {
 
 	@FXML
 	private TextArea txtAreaDescricao;
-	
-	@FXML private Label lbErroNome;
-	@FXML private Label lbErroDescricao;
+
+	@FXML
+	private Label lbErroNome;
+
+	@FXML
+	private Label lbErroDescricao;
 
 	@FXML
 	private Button btSalvar;
@@ -62,6 +64,14 @@ public class CategoriaProdutoFormController implements Initializable {
 		listeners.add(listener);
 	}
 
+	/**
+	 * Pega o objeto categoria na função getFormData e salva( ou atualiza caso ja
+	 * esteja cadastrado) no banco de dados
+	 * Chama metodo para exbir erros de validação caso tenha
+	 * 
+	 * @throws IOExcpetion
+	 * @throws ValidationException
+	 */
 	@FXML
 	public void onBtSalvarAction(ActionEvent event) {
 		try {
@@ -91,19 +101,11 @@ public class CategoriaProdutoFormController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		initializeNode();
 	}
 
-	private void initializeNode() {
-//		Constraints.setTextFieldMaxLength(txtNome, 60);
-//		Constraints.setTextFieldString(txtNome);
-//		Constraints.mascaraCEP(txtCep);
-//		Constraints.mascaraCelular(txtContato);
-//		Constraints.mascaraCPF(txtCpfCnpj);
-//		Constraints.tamanhoCpf = 14;
-//		Constraints.setTextFieldMaxLengthCPF(txtCpfCnpj);
-	}
-
+	/**
+	 * Atualiza o forms com os dados da categoria a ser atualizada
+	 */
 	public void updateDataForm() {
 		String id = categoriaProduto.getId() == null ? "" : categoriaProduto.getId().toString();
 		String nome = categoriaProduto.getNome() == null ? "" : categoriaProduto.getNome();
@@ -113,9 +115,14 @@ public class CategoriaProdutoFormController implements Initializable {
 		txtNome.setText(nome);
 		txtAreaDescricao.setText(descricao);
 
-
 	}
 
+	/**
+	 * Pega os dados inseridos no campo do form, cria um objeto de categoria com
+	 * eles, caso não tenha nenhum erro nos dados
+	 * 
+	 * @return CategoriaProduto com dados do form
+	 */
 	private CategoriaProduto getFormData() {
 		CategoriaProduto categoriaProduto = new CategoriaProduto();
 
@@ -125,7 +132,6 @@ public class CategoriaProdutoFormController implements Initializable {
 		categoriaProduto.setId(Utils.tryParseLong(txtId.getText()));
 		categoriaProduto.setNome(txtNome.getText());
 		categoriaProduto.setDescricao(txtAreaDescricao.getText());
-	
 
 		if (exception.getErros().size() > 0) {
 			throw exception;
@@ -133,22 +139,38 @@ public class CategoriaProdutoFormController implements Initializable {
 		return categoriaProduto;
 	}
 
+	/**
+	 * Valida os dados inseridos no forms de acordo com a regra de negocio
+	 * 
+	 * @param ve: map de exceptions com os erros de validações
+	 */
 	private void validacao(ValidationException ve) {
 
 		validarVazio(txtNome, ve, "nome");
 		if (txtAreaDescricao.getText() == null || txtAreaDescricao.getText().trim().equals("")) {
 			ve.addErro("descricao", "Descrição não pode ser vazia");
 		}
-		
+
 	}
 
+	/**
+	 * Verifica se o campo esta vazio, e adiciona ao map de exceptions
+	 * 
+	 * @param txt:  TextFild a ser validado
+	 * @param ve:   map de exceptions com os erros de validações
+	 * @param nome: nome do campo do textfield
+	 */
 	private void validarVazio(TextField txt, ValidationException ve, String nome) {
 		if (txt.getText() == null || txt.getText().trim().equals("")) {
 			ve.addErro(nome, nome + " não pode ser vazio");
 		}
 	}
-	
 
+	/**
+	 * Exibe as mensagens de erro para os campos que não atende a validação
+	 * 
+	 * @param Map dos erros encontrados na validação
+	 */
 	private void setMessagemErro(Map<String, String> erros) {
 		Set<String> fields = erros.keySet();
 
@@ -158,7 +180,6 @@ public class CategoriaProdutoFormController implements Initializable {
 		if (fields.contains("descricao")) {
 			lbErroDescricao.setText(erros.get("descricao"));
 		}
-
 
 	}
 }

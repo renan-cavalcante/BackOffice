@@ -25,12 +25,10 @@ public class Constraints {
 				 obsList2 = FXCollections.observableArrayList(obsList.stream().filter(
 							cliente -> cliente.getNome().toLowerCase().contains(cmb.getEditor().getText().toLowerCase()))
 							.collect(Collectors.toList()));
-				 System.out.println("text");
 			 }else {
 				 obsList2 = FXCollections.observableArrayList(obsList.stream().filter(
 							cliente -> cliente.getId().contains(cmb.getEditor().getText()))
 							.collect(Collectors.toList()));
-				System.out.println("num"); 
 			 }
 			
 			
@@ -386,12 +384,10 @@ public class Constraints {
 				 obsListProduto = FXCollections.observableArrayList(obsListCliente.stream().filter(
 							produto -> produto.getNome().toLowerCase().contains(comoBox.getEditor().getText().toLowerCase()))
 							.collect(Collectors.toList()));
-				 System.out.println("text");
 			 }else {
 				 obsListProduto = FXCollections.observableArrayList(obsListCliente.stream().filter(
 							cliente -> cliente.getId().toString().contains(comoBox.getEditor().getText()))
 							.collect(Collectors.toList()));
-				System.out.println("num"); 
 			 }
 			
 			

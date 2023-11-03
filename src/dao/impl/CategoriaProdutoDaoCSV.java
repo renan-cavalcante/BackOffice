@@ -165,7 +165,6 @@ public class CategoriaProdutoDaoCSV implements IArquivoCSV<CategoriaProduto>{
 			}
 			linha = buffer.readLine();
 		}
-		System.out.println("nada");
 		fluxo.close();
 		leitor.close();
 		buffer.close();

@@ -20,7 +20,6 @@ public class VendaProdutoDaoCsv {
 		File arquivo = DB.getArquivo(NOME);
 		FileWriter fileWriter = new FileWriter(arquivo, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		System.out.println("aqui");
 		printWriter.write(conteudo[0]+";"+conteudo[1]+";"+conteudo[2] + "\r\n");
 		printWriter.close();
 		fileWriter.close();

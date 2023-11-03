@@ -5,6 +5,7 @@ public class Cliente extends Usuario{
 	private Endereco endereco;
 	private String contato;
 	private String email;
+	private boolean ativo = true;
 	
 	public Cliente() {
 	}
@@ -20,6 +21,14 @@ public class Cliente extends Usuario{
 		this.endereco = endereco;
 		this.contato = contato;
 		this.email = email;
+	}
+	
+	public Cliente(String id, String nome, Endereco endereco, String contato, String email, boolean ativo) {
+		super(id, nome);
+		this.endereco = endereco;
+		this.contato = contato;
+		this.email = email;
+		this.ativo = ativo;
 	}
 
 	public Endereco getEndereco() {
@@ -48,11 +57,19 @@ public class Cliente extends Usuario{
 	}
 
 	public String toStringCSV() {
-		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+contato+";"+getEmail();
+		return getId()+";"+getNome()+";"+endereco.toStringCSV()+";"+contato+";"+getEmail()+";"+ativo;
 	}
 
 	@Override
 	public String toString() {
 		return  getNome() + ", " +getId();
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

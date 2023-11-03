@@ -31,19 +31,17 @@ import model.services.ProdutoService;
 public class ProdutoFormController implements Initializable {
 
 	private Produto produto;
-
 	private ProdutoService service;
 	private CategoriaProdutoService categoriaService;
-
 	private List<DataChargeListener> listeners = new ArrayList<>();
-
+	private ObservableList<CategoriaProduto> obsList;
 
 	@FXML
 	private TextField txtId;
 
 	@FXML
 	private TextField txtNome;
-	
+
 	@FXML
 	private TextField txtValor;
 
@@ -52,15 +50,14 @@ public class ProdutoFormController implements Initializable {
 
 	@FXML
 	private ComboBox<CategoriaProduto> cbxCategoria;
-	
-	private ObservableList<CategoriaProduto> obsList;
-	
 
 	@FXML
 	private TextArea txtAreaDescricao;
-	
-	@FXML private Label lbErroNome;
-	@FXML private Label lbErroDescricao;
+
+	@FXML
+	private Label lbErroNome;
+	@FXML
+	private Label lbErroDescricao;
 
 	@FXML
 	private Button btSalvar;
@@ -75,15 +72,27 @@ public class ProdutoFormController implements Initializable {
 	public void setProdutoService(ProdutoService service) {
 		this.service = service;
 	}
-	
+
 	public void setCategoriaProdutoService(CategoriaProdutoService service) {
 		this.categoriaService = service;
 	}
 
+	/**
+	 * metodo para class se inscrever no listener
+	 * 
+	 * @param listener: class a se inscrista
+	 */
 	public void subscribeDataListener(DataChargeListener listener) {
 		listeners.add(listener);
 	}
 
+	/**
+	 * Salva ou atualiza o produto do form
+	 * 
+	 * @param event
+	 * @throws IOException
+	 * @throws ValidationException
+	 */
 	@FXML
 	public void onBtSalvarAction(ActionEvent event) {
 		try {
@@ -100,17 +109,28 @@ public class ProdutoFormController implements Initializable {
 		}
 	}
 
+	/**
+	 * Avisa as class inscrita no listener que ouve atualização
+	 */
 	private void notifyDataChangeListeners() {
 		for (DataChargeListener listener : listeners) {
 			listener.onDataChanged();
 		}
 	}
 
+	/**
+	 * Fecha o form sem salvar os dados
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void onBtCancelarAction(ActionEvent event) {
 		Utils.currentStage(event).close();
 	}
-	
+
+	/**
+	 * Carrega o comboBox com as CategoriasProduto salvos
+	 */
 	public void updateComboBoxView() {
 		List<CategoriaProduto> list;
 		try {
@@ -126,19 +146,12 @@ public class ProdutoFormController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		initializeNode();
 	}
 
-	private void initializeNode() {
-//		Constraints.setTextFieldMaxLength(txtNome, 60);
-//		Constraints.setTextFieldString(txtNome);
-//		Constraints.mascaraCEP(txtCep);
-//		Constraints.mascaraCelular(txtContato);
-//		Constraints.mascaraCPF(txtCpfCnpj);
-//		Constraints.tamanhoCpf = 14;
-//		Constraints.setTextFieldMaxLengthCPF(txtCpfCnpj);
-	}
 
+	/**
+	 * Atualiza os campos do form com os dados do Produto selecionado
+	 */
 	public void updateDataForm() {
 		String id = produto.getId() == null ? "" : produto.getId().toString();
 		String nome = produto.getNome() == null ? "" : produto.getNome();
@@ -154,9 +167,13 @@ public class ProdutoFormController implements Initializable {
 		cbxCategoria.setValue(categoria);
 		txtAreaDescricao.setText(descricao);
 
-
 	}
 
+	/**
+	 * Inicia um produto com os dados do form
+	 * 
+	 * @return Produto
+	 */
 	private Produto getFormData() {
 		Produto produto = new Produto();
 		CategoriaProduto categoriaProduto = cbxCategoria.getValue();
@@ -170,7 +187,6 @@ public class ProdutoFormController implements Initializable {
 		produto.setQuantidade(Utils.tryParseInt(txtQuantidade.getText()));
 		produto.setDescricao(txtAreaDescricao.getText());
 		produto.setCategoria(categoriaProduto);
-	
 
 		if (exception.getErros().size() > 0) {
 			throw exception;
@@ -178,22 +194,38 @@ public class ProdutoFormController implements Initializable {
 		return produto;
 	}
 
+	/**
+	 * Valida os dados inseridos no forms de acordo com a regra de negocio
+	 * 
+	 * @param ve: map de exceptions com os erros de validações
+	 */
 	private void validacao(ValidationException ve) {
 
 		validarVazio(txtNome, ve, "nome");
 		if (txtAreaDescricao.getText() == null || txtAreaDescricao.getText().trim().equals("")) {
 			ve.addErro("descricao", "Descrição não pode ser vazia");
 		}
-		
+
 	}
 
+	/**
+	 * Verifica se o textField esta vazio, e adiciona ao map de exceptions
+	 * 
+	 * @param txt:  TextFild a ser validado
+	 * @param ve:   map de exceptions com os erros de validações
+	 * @param nome: nome do campo do textfield
+	 */
 	private void validarVazio(TextField txt, ValidationException ve, String nome) {
 		if (txt.getText() == null || txt.getText().trim().equals("")) {
 			ve.addErro(nome, nome + " não pode ser vazio");
 		}
 	}
-	
 
+	/**
+	 * Exibe as mensagens de erro para os campos que não atende a validação
+	 * 
+	 * @param Map dos erros encontrados na validação
+	 */
 	private void setMessagemErro(Map<String, String> erros) {
 		Set<String> fields = erros.keySet();
 
@@ -203,7 +235,6 @@ public class ProdutoFormController implements Initializable {
 		if (fields.contains("descricao")) {
 			lbErroDescricao.setText(erros.get("descricao"));
 		}
-
 
 	}
 }

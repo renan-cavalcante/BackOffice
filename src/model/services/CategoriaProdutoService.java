@@ -41,7 +41,7 @@ public class CategoriaProdutoService {
 		List<CategoriaProduto> resultado = new ArrayList<CategoriaProduto>();
 		
 		for(CategoriaProduto c : categoriaProdutos) {
-			if(c.getNome().contains(nome)) {
+			if(c.getNome().toLowerCase().contains(nome.toLowerCase())) {
 				resultado.add(c);
 			}
 		}

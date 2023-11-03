@@ -29,7 +29,6 @@ public class VendaDaoCsv implements IArquivoCSV<Venda> {
 		FileWriter fileWriter = new FileWriter(arquivo, true);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		conteudo.setId(DB.getSequencia("vendaSequenci"));
-		System.out.println("insertVenda");
 		relacionamentoVendaProdutoInsert(conteudo);
 		printWriter.write(conteudo.toStringCsv() + "\r\n");
 		printWriter.close();

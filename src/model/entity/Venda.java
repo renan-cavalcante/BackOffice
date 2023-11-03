@@ -8,6 +8,7 @@ public class Venda {
 	private Cliente cliente;
 	private Pilha<Produto> produtos;
 	private Double valor;
+	private boolean ativo;
 	
 	public Venda() {
 		super();
@@ -20,12 +21,13 @@ public class Venda {
 	}
 
 
-	public Venda(Long id, Cliente cliente, Pilha<Produto> produtos, Double valor) {
+	public Venda(Long id, Cliente cliente, Pilha<Produto> produtos, Double valor, boolean ativo) {
 		super();
 		this.id = id;
 		this.cliente = cliente;
 		this.produtos = produtos;
 		this.valor = valor;
+		this.ativo = ativo;
 	}
 	
 	public Long getId() {
@@ -61,7 +63,15 @@ public class Venda {
 	}
 
 	public String toStringCsv() {
-		return  id +";"+ cliente.getId()+";"+ valor;
+		return  id +";"+ cliente.getId()+";"+ valor+"ativo";
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 	
 	

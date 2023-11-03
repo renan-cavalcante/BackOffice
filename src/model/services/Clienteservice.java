@@ -16,12 +16,12 @@ public class ClienteService {
 		return dao.findAll();
 	}
 	
-	public void saveOrUpdate(Cliente cliente) throws IOException {
+	public Cliente saveOrUpdate(Cliente cliente) throws IOException {
 		if(dao.findById(cliente.getId()) != null) {
-			dao.update(cliente);
-			return;
+			return dao.update2(cliente);
+			
 		}
-		dao.insert(cliente);
+		return dao.insert2(cliente);
 	}
 	
 	public void remove(Cliente cliente) throws IOException {
@@ -41,7 +41,7 @@ public class ClienteService {
 		List<Cliente> resultado = new ArrayList<Cliente>();
 		
 		for(Cliente c : clientes) {
-			if(c.getNome().contains(nome)) {
+			if(c.getNome().toLowerCase().contains(nome.toLowerCase())) {
 				resultado.add(c);
 			}
 		}

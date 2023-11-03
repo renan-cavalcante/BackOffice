@@ -1,6 +1,7 @@
 package model.services;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import dao.impl.VendaDaoCsv;
@@ -31,6 +32,18 @@ public class VendaService {
 	
 	public List<Venda> findByName(String name) throws IOException {
 		return dao.findByName(name);
+	}
+	
+	public List<Venda> pesquisaPorNome(String nome) throws IOException{
+		List<Venda> vendas = findAll();
+		List<Venda> resultado = new ArrayList<Venda>();
+		
+		for(Venda v : vendas) {
+			if(v.getCliente().getNome().toLowerCase().contains(nome.toLowerCase())) {
+				resultado.add(v);
+			}
+		}
+		return resultado;
 	}
 	
 
