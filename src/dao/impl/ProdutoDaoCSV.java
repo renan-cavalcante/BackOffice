@@ -15,6 +15,10 @@ public class ProdutoDaoCSV implements IArquivoCSV<Produto> {
 	private DB banco = new DB();
 
 	private final String NOME = "produto";
+	
+	public Long getSequenci() throws IOException {
+		return banco.getSequencia("produtoSequenci");
+	}
 
 	@Override
 	public void insert(Produto conteudo) throws IOException {
@@ -88,7 +92,7 @@ public class ProdutoDaoCSV implements IArquivoCSV<Produto> {
 				if (daoProduto == null) {
 					setCategoriaProdutoDaoCSV();
 				}
-				return (new Produto(p));
+				return (p);
 			}
 		}
 		return null;

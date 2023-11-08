@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import dao.impl.ProdutoDaoCSV;
+import gui.util.Utils;
 import model.entity.Produto;
 
 public class ProdutoService {
@@ -22,6 +23,12 @@ public class ProdutoService {
 			return;
 		}
 		dao.insert(cproduto);
+	}
+	
+	public void update(Produto cproduto) throws IOException {
+
+			dao.update(cproduto);
+	
 	}
 	
 	public void remove(Produto cproduto) throws IOException {
@@ -47,5 +54,16 @@ public class ProdutoService {
 		}
 		resultado.sort(compNome);
 		return resultado;
+	}
+	
+	public Produto[] tabelaHash() throws IOException {
+		List<Produto> produto = findAll();
+		Produto[] tabela = new Produto[Utils.tryParseInt(dao.getSequenci().toString())];
+		for(Produto p : produto) {
+			int posicao = p.hashCode();
+			System.out.println(posicao);
+			tabela[posicao] = p;
+		}
+		return tabela;
 	}
 }

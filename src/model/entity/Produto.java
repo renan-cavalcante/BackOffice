@@ -2,6 +2,8 @@ package model.entity;
 
 import java.util.Objects;
 
+import gui.util.Utils;
+
 public class Produto {
 	private Long id;
 	private String nome;
@@ -77,8 +79,8 @@ public class Produto {
 		this.quantidade = quantidade;
 	}
 	
-	public void addQuantidade(Integer quantidade) {
-		this.quantidade += quantidade;
+	public void addQuantidade(Integer quanti) {
+		this.quantidade += quanti;
 	}
 	
 	public void subQuantidade(Integer quantidade) {
@@ -106,8 +108,9 @@ public class Produto {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Utils.tryParseInt(id.toString());
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {

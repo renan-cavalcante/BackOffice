@@ -29,8 +29,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -48,6 +50,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 	private ProdutoService produtoService;
 	private static Carrinho carrinho = new Carrinho();
 
+
 	@FXML
 	private ComboBox<Cliente> comoBoxCliente;
 
@@ -55,7 +58,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 	private ComboBox<Produto> comoBoxProduto;
 
 	@FXML
-	private TableView<Produto> listViewProduto;
+	private TableView<Produto> tableViewProduto;
 
 	@FXML
 	private TableColumn<Produto, String> tableColumnNome;
@@ -111,7 +114,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 	public void btnOnCadastraCliente(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
 		Cliente cliente = new Cliente();
-		createDialogForm(cliente, "/gui/ClienteForm.fxml", parentStage, (ClienteFormController controller) -> {
+		createDialogForm("Cadastra cliente", "/gui/ClienteForm.fxml", parentStage, (ClienteFormController controller) -> {
 			controller.setCliente(cliente);
 			controller.setClienteService(new ClienteService());
 			controller.updateDataForm();
@@ -160,18 +163,54 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 
 			String[] dadosProduto = comoBoxProduto.getEditor().getText().split(",");
 			Produto p = new Produto(produtoService.findById(dadosProduto[1]));
-			p.addQuantidade(Utils.tryParseInt(txtQuantidade.getText()));
+			Integer quantidade = Utils.tryParseInt(txtQuantidade.getText());
+			p.addQuantidade(quantidade);
+			if(!verificaDisponibilidadeEstoque(p)) {
+				throw new InvalidAttributesException("Não a estoque suficiente para adiciona o produto");
+			}
+			p.setQuantidade(quantidade);
 			carrinho.addProdutos(p);
+			
 			updateTableViewProduto();
 
 		} catch (IOException e) {
 			Alerts.showAlert("Erro", "Erro ao inserir cliente", e.getMessage(), AlertType.ERROR);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			Alerts.showAlert("Erro", null, "Selecione um produto", AlertType.ERROR);
-		} catch (Exception e) {
+		} catch (InvalidAttributesException e) {
+			Alerts.showAlert("Invalido", null, e.getMessage(), AlertType.WARNING);
+			e.printStackTrace();
+		}catch (Exception e) {
+			Alerts.showAlert("Erro", null, e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();
 		}
 
+	}
+	
+
+	/**
+	 * Abre form de view do produto selecionado na tabela
+	 * @param event
+	 */
+	@FXML
+	public void onBtTableLineAction(MouseEvent event) {
+		Stage parentStage = Utils.currentStage(event);
+		TableViewSelectionModel<Produto> tbv = tableViewProduto.getSelectionModel();
+		Produto produtoSelecionado = tbv.getSelectedItem();
+
+		if(produtoSelecionado != null) {
+			createDialogEdit("Produto", "/gui/EditQuantidade.fxml", parentStage, (CarrinhoEditController controller) -> {
+				
+				controller.setCarrinhoService(new ProdutoService());
+				controller.setProduto(produtoSelecionado);
+				controller.setCarrinho(carrinho);
+
+				controller.subscribeDataListener(this);
+			});
+		}
+
+
+		tbv.clearSelection();
 	}
 
 	/**
@@ -277,8 +316,8 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 		}
 
 		obsListProdutoInserido = FXCollections.observableList(list);
-		listViewProduto.setItems(obsListProdutoInserido);
-		listViewProduto.refresh();
+		tableViewProduto.setItems(obsListProdutoInserido);
+		tableViewProduto.refresh();
 		precoTotal.setText(carrinho.calcularTotal().toString());
 	}
 
@@ -298,6 +337,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 			CheckoutController controller = loader.getController();
 			controller.setCarrinho(carrinho);
 			controller.setVendaService(new VendaService());
+			controller.subscribeDataListener(this);
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("Checkout");
@@ -312,7 +352,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 		}
 	}
 
-	private <T> void createDialogForm(Cliente obj, String absoluteName, Stage parentStage,
+	private <T> void createDialogForm(String titulo, String absoluteName, Stage parentStage,
 			Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -323,15 +363,67 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 			initializingAction.accept(controller);
 
 			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Cadastra cliente");
+			dialogStage.setTitle(titulo);
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.showAndWait();
+			
 		} catch (IOException e) {
 			Alerts.showAlert("IO Excpetion", "Erro carregando view", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T> void createDialogEdit(String titulo, String absoluteName, Stage parentStage,
+			Consumer<T> initializingAction) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+			Pane pane = loader.load();
+
+			CarrinhoEditController controller = loader.getController();
+
+			initializingAction.accept((T)controller);
+
+			Stage dialogStage = new Stage();
+			controller.onBtClosed(dialogStage);
+			dialogStage.setTitle(titulo);
+			dialogStage.setScene(new Scene(pane));
+			dialogStage.setResizable(false);
+			dialogStage.initOwner(parentStage);
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.showAndWait();
+			
+		} catch (IOException e) {
+			Alerts.showAlert("IO Excpetion", "Erro carregando view", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean verificaDisponibilidadeEstoque(Produto produto) throws Exception{
+		Produto produtoEstoque = produtoService.findById(produto.getId().toString());
+		Produto produtoCarrinho = new Produto(produto);
+		produtoCarrinho.setQuantidade(produto.getQuantidade());
+		if(produtoCarrinho.getQuantidade() > produtoEstoque.getQuantidade()) {
+			return false;
+		}		
+		Pilha<Produto> produtosPilha = carrinho.getProdutos().clonar();
+		
+		while(!produtosPilha.isEmpty()) {
+			Produto auxiliar = produtosPilha.pop();
+			if(auxiliar.equals(produtoEstoque)) {
+				produtoCarrinho.addQuantidade(auxiliar.getQuantidade());
+			}
+		}
+		if(produtoCarrinho.getQuantidade() > produtoEstoque.getQuantidade()) {
+			System.out.println(produtoCarrinho.getQuantidade()+"--");
+			return false;
+		}	
+
+		return true;
+	
 	}
 
 	/**
@@ -371,9 +463,27 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 	 */
 	@Override
 	public void onDataChanged() {
-		labelNome.setText(carrinho.getCliente().getNome());
-		labelEndereco.setText(carrinho.getCliente().getEndereco().toString());
-		labelContato.setText(carrinho.getCliente().getContato());
+		if(Utils.classeChamadora().equals( CheckoutController.class.getName())) {
+			carrinho = new Carrinho();
+			labelNome.setText("");
+			labelEndereco.setText("");
+			labelContato.setText("");
+			comoBoxCliente.getEditor().setText("");
+			comoBoxProduto.getEditor().setText("");
+			
+		}
+		if(carrinho.getCliente()!= null) {
+			labelNome.setText(carrinho.getCliente().getNome());
+			labelEndereco.setText(carrinho.getCliente().getEndereco().toString());
+			labelContato.setText(carrinho.getCliente().getContato());
+		}
+
+		try {
+			updateTableViewProduto();
+		} catch (Exception e) {
+			Alerts.showAlert("Erro", "Erro ao atualizar tabela", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
 
 	}
 
