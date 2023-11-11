@@ -25,6 +25,8 @@ O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, P
 - Baixe o openJFK 21 em https://gluonhq.com/products/javafx/
 - No eclipse rode o projeto (Ocorrerar um erro), depois clique com o botão direito no main do projeto, no pacote aplication, e depois em Run As, Run Configurations.., 
 - selecione a aba Arguments 
-- no campoVM arguments digite sem as aspas "--module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls" substituindo caminho, pelo o caminho onde esta instalado o openJFK na sua maquina
+- no campoVM arguments digite 
+    --module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls
+ substituindo caminho, pelo o caminho onde esta instalado o openJFK na sua maquina
 
 
