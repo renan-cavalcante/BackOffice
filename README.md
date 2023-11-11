@@ -26,7 +26,7 @@ O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, P
 - No eclipse rode o projeto (Ocorrerar um erro), depois clique com o botão direito no main do projeto, no pacote aplication, e depois em Run As, Run Configurations.., 
 - selecione a aba Arguments 
 - no campoVM arguments digite 
-    --module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls
+        --module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls
  substituindo caminho, pelo o caminho onde esta instalado o openJFK na sua maquina
 
 
