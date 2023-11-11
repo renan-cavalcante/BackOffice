@@ -48,7 +48,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 
 	private ClienteService clienteService = new ClienteService();
 	private ProdutoService produtoService;
-	private static Carrinho carrinho = new Carrinho();
+	private static Carrinho carrinho;
 
 
 	@FXML
@@ -97,7 +97,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 	private Button btnFinalizr;
 
 	@FXML
-	private Button btnSalavar;
+	private Button btnLimpar;
 
 	private ObservableList<Cliente> obsListCliente;
 
@@ -152,6 +152,14 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 
 		}
 
+	}
+
+	public static void setCarrinho(Carrinho carrinho) {
+		CarrinhoPageController.carrinho = carrinho;
+	}
+	
+	public static Carrinho getCarrinho() {
+		return carrinho;
 	}
 
 	/**
@@ -211,6 +219,19 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 
 
 		tbv.clearSelection();
+	}
+	
+	
+	@FXML
+	public void limparCarrinho() {
+		carrinho = new Carrinho();
+		resetaCarrinho();
+		try {
+			updateTableViewProduto();
+		} catch (Exception e) {
+			Alerts.showAlert("Erro", "Erro ao atualizar tabela", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -457,6 +478,15 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 		}
 
 	}
+	
+	private void resetaCarrinho() {
+		carrinho = new Carrinho();
+		labelNome.setText("");
+		labelEndereco.setText("");
+		labelContato.setText("");
+		comoBoxCliente.getEditor().setText("");
+		comoBoxProduto.getEditor().setText("");
+	}
 
 	/**
 	 * Atualiza dados do cliente inserido
@@ -464,12 +494,7 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 	@Override
 	public void onDataChanged() {
 		if(Utils.classeChamadora().equals( CheckoutController.class.getName())) {
-			carrinho = new Carrinho();
-			labelNome.setText("");
-			labelEndereco.setText("");
-			labelContato.setText("");
-			comoBoxCliente.getEditor().setText("");
-			comoBoxProduto.getEditor().setText("");
+			resetaCarrinho();
 			
 		}
 		if(carrinho.getCliente()!= null) {

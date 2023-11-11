@@ -106,7 +106,7 @@
                   <ButtonBar layoutX="82.0" layoutY="238.0" prefHeight="40.0" prefWidth="112.0">
                     <buttons>
                       <Button fx:id="btnFinalizr" mnemonicParsing="false" onAction="#btnOnFinalizar" text="Finalizar" />
-                        <Button fx:id="btnSalavar" mnemonicParsing="false" onAction="#btnOnSalvar" text="Salvar" />
+                        <Button fx:id="btnLimpar" mnemonicParsing="false" onAction="#limparCarrinho" text="Limpar" />
                     </buttons>
                   </ButtonBar>
                   <Label layoutX="31.0" layoutY="202.0" text="Total: R$">

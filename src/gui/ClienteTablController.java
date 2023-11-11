@@ -16,6 +16,7 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,6 +34,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.entity.Cliente;
 import model.entity.Endereco;
 import model.services.ClienteService;
@@ -40,8 +42,6 @@ import model.services.ClienteService;
 public class ClienteTablController implements Initializable, DataChargeListener {
 
 	private ClienteService clienteService;
-	
-	
 
 	@FXML
 	private Button buttonCadastrar;
@@ -79,20 +79,35 @@ public class ClienteTablController implements Initializable, DataChargeListener 
 	public void onBtCadastrarAction(ActionEvent event) {
 		Stage parentStage = Utils.currentStage(event);
 		Cliente cliente = new Cliente();
-		createDialogForm(cliente, "/gui/ClienteForm.fxml", parentStage, X -> {
-		});
+		createDialogForm("Cadastra cliente", "/gui/ClienteForm.fxml", parentStage,
+				(ClienteFormController controller) -> {
+					if (cliente.getId() != null) {
+						if (cliente.getId().length() > 14) {
+							controller.onRbtEmpresaAction();
+						}
+
+					}
+					controller.setCliente(cliente);
+					controller.setClienteService(new ClienteService());
+					controller.updateDataForm();
+					controller.subscribeDataListener(this);
+					controller.setNovo(true);
+				});
 	}
 
 	@FXML
 	public void onBtTableLineAction(MouseEvent event) {
 
 		TableViewSelectionModel<Cliente> tbv = tableViewCliente.getSelectionModel();
-
 		int indice = tbv.getSelectedIndex();
 		if (indice >= 0) {
 			Cliente cliente = (Cliente) tableViewCliente.getItems().get(indice);
-			createDialogView(cliente, "/gui/ClienteView.fxml", Utils.currentStage(event),
+			createDialogForm("Editar cliente", "/gui/ClienteView.fxml", Utils.currentStage(event),
 					(ClienteViewController controller) -> {
+						controller.setCliente(cliente);
+						controller.setClienteService(new ClienteService());
+						controller.updateDataForm();
+						controller.subscribeDataListener(this);
 					});
 		}
 
@@ -162,58 +177,29 @@ public class ClienteTablController implements Initializable, DataChargeListener 
 
 	}
 
-	@SuppressWarnings({ "unchecked", "hiding" })
-	private <T> void createDialogForm(Cliente obj, String absoluteName, Stage parentStage,
+	private <T> void createDialogForm(String titulo, String absoluteName, Stage parentStage,
 			Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
 			Pane pane = loader.load();
 
-			ClienteFormController controller = loader.getController();
-			if (obj.getId() != null) {
-				if (obj.getId().length() > 14) {
-					controller.onRbtEmpresaAction();
+			T controller = loader.getController();
+
+			initializingAction.accept(controller);
+
+			Stage dialogStage = new Stage();
+			dialogStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent t) {
+					t.consume();
+					updateTableView();
+					tableViewCliente.refresh();
+					dialogStage.close();
+
 				}
-
-			}
-
-			controller.setCliente(obj);
-			controller.setClienteService(new ClienteService());
-			controller.updateDataForm();
-			controller.subscribeDataListener(this);
-
-			initializingAction.accept((T) controller);
-
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Cadastra cliente");
-			dialogStage.setScene(new Scene(pane));
-			dialogStage.setResizable(false);
-			dialogStage.initOwner(parentStage);
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.showAndWait();
-		} catch (IOException e) {
-			Alerts.showAlert("IO Excpetion", "Erro carregando view", e.getMessage(), AlertType.ERROR);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private <T> void createDialogView(Cliente obj, String absoluteName, Stage parentStage,
-			Consumer<T> initializingAction) {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-			Pane pane = loader.load();
-
-			ClienteViewController controller = loader.getController();
-			controller.setCliente(obj);
-			controller.setClienteService(new ClienteService());
-			controller.updateDataForm();
-			controller.subscribeDataListener(this);
-			
-
-			initializingAction.accept((T) controller);
-
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Cadastra cliente");
+			});
+			dialogStage.setTitle(titulo);
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);

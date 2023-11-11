@@ -16,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.entity.Carrinho;
 import model.services.CategoriaProdutoService;
 import model.services.ClienteService;
 import model.services.ProdutoService;
@@ -64,10 +65,16 @@ public class MainViewController implements Initializable {
 	@FXML
 	public void onMenuItemLancaVendaAction() {
 		loadView("/gui/CarrinhoPage.fxml", (CarrinhoPageController controller) -> {
+			
+			if(CarrinhoPageController.getCarrinho() == null) {
+				CarrinhoPageController.setCarrinho(new Carrinho());
+			}
+			
 			controller.setClienteService(new ClienteService());
 			controller.setProdutoService(new ProdutoService());
 			controller.updateComboBoxClientePesquisa();
 			controller.updateComboBoxProdutoPesquisa();
+			controller.onDataChanged();
 		}
 		);
 	}
@@ -79,11 +86,6 @@ public class MainViewController implements Initializable {
 			controller.updateTableView();
 		}
 		);
-		
-	}
-	
-	@FXML
-	public void onMenuItemCarrinhoAction() {
 		
 	}
 	

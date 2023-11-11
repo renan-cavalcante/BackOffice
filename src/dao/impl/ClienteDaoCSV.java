@@ -6,8 +6,10 @@ import java.util.List;
 
 import dao.IClienteCsv;
 import db.DB;
+import gui.util.Utils;
 import model.entity.Cliente;
 import model.entity.Endereco;
+import model.services.ClienteService;
 
 public class ClienteDaoCSV implements IClienteCsv {
 
@@ -82,17 +84,23 @@ public class ClienteDaoCSV implements IClienteCsv {
 		List<Cliente> list = findAllInterno();
 
 		for (Cliente c : list) {
-			if (c.isAtivo()) {
+			if (c.isAtivo() && c.getId().equals(id)) {
 				return (c);
 			}
 		}
 		return null;
 	}
 
-	protected Cliente findByIdAll(String id) throws IOException {
+	public Cliente findByIdAll(String id) throws IOException {
 		List<Cliente> list = findAllInterno();
 		for (Cliente c : list) {
-			return (c);
+			if (c.getId().equals(id)) {
+				return (c);
+			}
+
+		}
+		if(Utils.classeChamadora().equals(ClienteService.class.getName())){
+			return null;
 		}
 		throw new IOException("Cliente da venda não localizado");
 	}

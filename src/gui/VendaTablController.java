@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -23,6 +24,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
@@ -32,9 +34,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.entity.Carrinho;
 import model.entity.Produto;
 import model.entity.Venda;
-import model.services.ClienteService;
 import model.services.ProdutoService;
 import model.services.VendaService;
 
@@ -82,7 +84,16 @@ public class VendaTablController implements Initializable, DataChargeListener {
 		
 		try {
 			createDialogView("Carrinho","/gui/CarrinhoPage.fxml",parentStage, (CarrinhoPageController controller) -> {
-				controller.setClienteService(new ClienteService());
+				if(CarrinhoPageController.getCarrinho() != null) {
+					Optional<ButtonType> escolha = Alerts.showConfirmation("Nova venda","Existe uma venda em curso, deseja continuala?" );
+					if(escolha.get() == ButtonType.OK) {
+						controller.onDataChanged();
+					}else {
+						CarrinhoPageController.setCarrinho(new Carrinho());
+					}
+				}else {
+					CarrinhoPageController.setCarrinho(new Carrinho());
+				}
 				controller.setProdutoService(new ProdutoService());
 				controller.updateComboBoxClientePesquisa();
 				controller.updateComboBoxProdutoPesquisa();

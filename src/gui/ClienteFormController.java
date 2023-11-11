@@ -28,9 +28,8 @@ import model.services.ClienteService;
 public class ClienteFormController implements Initializable {
 
 	private Cliente cliente;
-
 	private ClienteService service;
-
+	private boolean novo;
 	private List<DataChargeListener> listeners = new ArrayList<>();
 
 	@FXML
@@ -113,7 +112,12 @@ public class ClienteFormController implements Initializable {
 		try {
 			clearErro();
 			cliente = getFormData();
-			cliente = service.saveOrUpdate(cliente);
+			if(novo) {
+				cliente = service.save(cliente);
+			}else {
+				cliente = service.update(cliente);
+			}
+			
 			
 			notifyDataChangeListeners();
 			Utils.currentStage(event).close();
@@ -172,6 +176,8 @@ public class ClienteFormController implements Initializable {
 
 	private void initializeNode() {
 		Constraints.setTextFieldMaxLength(txtNome, 60);
+		Constraints.setTextFieldMaxLength(txtNumero, 8);
+		Constraints.setTextFieldMaxLength(txtComplemento, 20);
 		Constraints.setTextFieldString(txtNome);
 		Constraints.mascaraCEP(txtCep);
 		Constraints.mascaraCelular(txtContato);
@@ -305,6 +311,14 @@ public class ClienteFormController implements Initializable {
 		lbErrorNome.setText("");
 		lbErrorRua.setText("");
 		lbErrorCep.setText("");
+	}
+
+	public boolean isNovo() {
+		return novo;
+	}
+
+	public void setNovo(boolean novo) {
+		this.novo = novo;
 	}
 
 }

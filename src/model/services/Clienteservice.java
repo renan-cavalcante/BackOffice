@@ -16,13 +16,22 @@ public class ClienteService {
 		return dao.findAll();
 	}
 	
-	public Cliente saveOrUpdate(Cliente cliente) throws IOException {
-		if(dao.findById(cliente.getId()) != null) {
-			return dao.update(cliente);
-			
+	public Cliente save(Cliente cliente) throws IOException {
+		Cliente clienteBusca = dao.findByIdAll(cliente.getId());
+		if(clienteBusca != null) {
+			if(!clienteBusca.isAtivo()) {
+				return update(cliente);
+			}
+			throw new IOException("O cliente ja esta cadastrado");
 		}
 		return dao.insert(cliente);
 	}
+	
+	public Cliente update(Cliente cliente) throws IOException {
+			return dao.update(cliente);
+	}
+	
+	
 	
 	public void remove(Cliente cliente) throws IOException {
 		dao.delete(cliente.getId());

@@ -1,6 +1,5 @@
 package gui;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import gui.listeners.DataChargeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,45 +24,48 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.entity.Cliente;
 import model.services.ClienteService;
 
-public class ClienteViewController implements Initializable {
-	
+public class ClienteViewController implements Initializable, DataChargeListener {
+
 	private Cliente cliente;
 	private ClienteService clienteService;
 	private List<DataChargeListener> listeners = new ArrayList<>();
-	
+
 	@FXML
 	private Label labelId;
-	
+
 	@FXML
 	private Label labelNome;
-	
+
 	@FXML
 	private Label labelEndereco;
-	
+
 	@FXML
 	private Label labelContato;
-	
+
 	@FXML
 	private Label labelEmail;
 
 	@FXML
 	private Button btnEditar;
-	
+
 	@FXML
 	private Button btnExcluir;
-	
+
 	@FXML
 	public void onBtnEditar(ActionEvent event) {
 		createDialogForm(cliente, "/gui/ClienteForm.fxml", Utils.currentStage(event),
 				(ClienteFormController controller) -> {
 					controller.bloquearRadioButton();
 					controller.bloquearCpfCnpj();
+					controller.subscribeDataListener(this);
+					controller.setNovo(false);
 				});
 	}
-	
+
 	@FXML
 	public void onBtnExcluir(ActionEvent event) {
 		Optional<ButtonType> escolha = Alerts.showConfirmation("Confirmar", "Deseja mesmo deletar o cliente");
@@ -78,13 +81,13 @@ public class ClienteViewController implements Initializable {
 			}
 		}
 	}
-	
+
 	private void notifyDataChangeListeners() {
 		for (DataChargeListener listener : listeners) {
 			listener.onDataChanged();
 		}
 	}
-	
+
 	public void subscribeDataListener(DataChargeListener listener) {
 		listeners.add(listener);
 	}
@@ -92,9 +95,9 @@ public class ClienteViewController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public void updateDataForm() {
 		String id = cliente.getId().toString();
 		String nome = cliente.getNome();
@@ -109,15 +112,15 @@ public class ClienteViewController implements Initializable {
 		labelEmail.setText(email);
 
 	}
-	
+
 	public void setClienteService(ClienteService service) {
 		clienteService = service;
 	}
-	
+
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-	
+
 	@SuppressWarnings({ "unchecked" })
 	private <T> void createDialogForm(Cliente obj, String absoluteName, Stage parentStage,
 			Consumer<T> initializingAction) {
@@ -134,6 +137,16 @@ public class ClienteViewController implements Initializable {
 			initializingAction.accept((T) controller);
 
 			Stage dialogStage = new Stage();
+			dialogStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+				@Override
+				public void handle(WindowEvent t) {
+					t.consume();
+					updateDataForm();
+					dialogStage.close();
+
+				}
+			});
 			dialogStage.setTitle("Editar Categoria");
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
@@ -143,5 +156,17 @@ public class ClienteViewController implements Initializable {
 		} catch (IOException e) {
 			Alerts.showAlert("IO Excpetion", "Erro carregando view", e.getMessage(), AlertType.ERROR);
 		}
+	}
+
+	@Override
+	public void onDataChanged() {
+		try {
+			cliente = clienteService.findById(cliente.getId());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		updateDataForm();
+		
 	}
 }
