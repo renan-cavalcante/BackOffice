@@ -4,9 +4,8 @@
 ### Descrição
 <br><br>
 
-    Trabalho da aula de Estrutura de dados com o objetivo de aplicar os conceitosde Fila, Pilha e Lista aprendidos em aula, desenvolvendo um sistema de Back-Office.
-    O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, Produtos e
-Categoria dos Produtos, alem de permitir lançar vendas para os clientes.
+Trabalho da aula de Estrutura de dados com o objetivo de aplicar os conceitosde Fila, Pilha e Lista aprendidos em aula, desenvolvendo um sistema de Back-Office.
+O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, Produtos e Categoria dos Produtos, alem de permitir lançar vendas para os clientes.
 
 ### Tecnologias usadas
 
@@ -24,10 +23,8 @@ Categoria dos Produtos, alem de permitir lançar vendas para os clientes.
 <br><br>
 
 - Baixe o openJFK 21 em https://gluonhq.com/products/javafx/
-- No eclipse rode o projeto (Ocorrerar um erro), depois clique com o botão direito no main do projeto,
-no pacote aplication, e depois em Run As, Run Configurations.., 
+- No eclipse rode o projeto (Ocorrerar um erro), depois clique com o botão direito no main do projeto, no pacote aplication, e depois em Run As, Run Configurations.., 
 - selecione a aba Arguments 
-- no campoVM arguments digite sem as aspas "--module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls"
-substituindo caminho, pelo o caminho onde esta instalado o openJFK na sua maquina
+- no campoVM arguments digite sem as aspas "--module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls" substituindo caminho, pelo o caminho onde esta instalado o openJFK na sua maquina
 
 
