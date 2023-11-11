@@ -2,11 +2,9 @@
 <br><br>
 
 ### Descrição
-
 <br><br>
 
-    Trabalho da aula de Estrutura de dados com o objetivo de aplicar os conceitos
-de Fila, Pilha e Lista aprendidos em aula, desenvolvendo um sistema de Back-Office.
+    Trabalho da aula de Estrutura de dados com o objetivo de aplicar os conceitosde Fila, Pilha e Lista aprendidos em aula, desenvolvendo um sistema de Back-Office.
     O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, Produtos e
 Categoria dos Produtos, alem de permitir lançar vendas para os clientes.
 
