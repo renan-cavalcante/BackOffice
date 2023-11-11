@@ -1,6 +1,7 @@
 package gui;
 
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -101,7 +102,7 @@ public class CheckoutController implements Initializable {
 					produtoService.update(produtoEstoque);
 					
 				}
-				vendaService.saveOrUpdate(new Venda(carrinho));
+				vendaService.saveOrUpdate(new Venda(carrinho, LocalDateTime.now()));
 				carrinho = null;
 				notifyDataChangeListeners();
 				Utils.currentStage(event).close();

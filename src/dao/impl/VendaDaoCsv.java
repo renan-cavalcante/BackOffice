@@ -1,6 +1,7 @@
 package dao.impl;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +76,7 @@ public class VendaDaoCsv implements IArquivoCSV<Venda> {
 			Pilha<Produto> produtos = dao.findProdutosVenda(dados[0]);
 
 			list.add(new Venda(Utils.tryParseLong(dados[0]), daoCliente.findByIdAll(dados[1]), produtos,
-					Utils.tryParseDouble(dados[2]), Boolean.parseBoolean(dados[3])));
+					Utils.tryParseDouble(dados[2]), Boolean.parseBoolean(dados[3]), LocalDateTime.parse(dados[4])));
 
 		}
 

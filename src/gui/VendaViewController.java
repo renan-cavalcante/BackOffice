@@ -4,7 +4,9 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -21,11 +23,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.MapValueFactory;
 import model.entity.Produto;
 import model.entity.Venda;
 import model.services.VendaService;
 
+@SuppressWarnings("rawtypes")
 public class VendaViewController implements Initializable {
 	
 	private Venda venda;
@@ -41,15 +46,29 @@ public class VendaViewController implements Initializable {
 	
 	@FXML
 	private Label labelValor;
-
 	
 	@FXML
-	private ListView<Produto> listView;
+	private Label labelData;
+	
+	@FXML
+	private TableView<Map<String, String>>  tableView;
+	
+	@FXML
+	private TableColumn<Map, String> tableColumnNome;
+
+	@FXML
+	private TableColumn<Map, String> tableColumnValor;
+
+	@FXML
+	private TableColumn<Map, String> tableColumnQuantidade;
+
+	@FXML
+	private TableColumn<Map, String> tableColumnTotal;
 
 	@FXML
 	private Button btnEditar;
 
-	private ObservableList<Produto> obsList;
+	private ObservableList<Map<String, String>> obsList;
 	
 
 	@FXML
@@ -80,8 +99,18 @@ public class VendaViewController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		// TODO Auto-generated method stub
-		
+		initializeNodes();
+	}
+
+	private void initializeNodes() {
+
+
+		tableColumnNome.setCellValueFactory(new MapValueFactory<>("nome"));
+		tableColumnValor.setCellValueFactory(new MapValueFactory<>("valor"));
+		tableColumnQuantidade.setCellValueFactory(new MapValueFactory<>("quantidade"));
+		tableColumnTotal.setCellValueFactory(new MapValueFactory<>("total"));
+
+
 	}
 	
 	public void updateDataForm() throws Exception {
@@ -89,18 +118,39 @@ public class VendaViewController implements Initializable {
 		String id = venda.getId().toString();
 		String nome = venda.getCliente().getNome();
 		String valor = venda.getValor().toString();
+		String data = venda.getDataFormat();
+	
+		labelId.setText(id);
+		labelNome.setText(nome);
+		labelValor.setText(valor);
+		labelData.setText(data);
+		
 		Pilha<Produto> aux = venda.getProdutos().clonar();
 		while(!aux.isEmpty()) {
 			list.add(aux.pop());
 		}
 		
-		obsList = FXCollections.observableArrayList(list);
+		obsList = FXCollections.<Map<String, String>>observableArrayList();
+		try {
+		
+			for (Produto p : list) {
+				Map<String, String> produto = new HashMap<>();
+				produto.put("nome", p.getNome());
 
+				produto.put("valor", p.getValor().toString());
+			
+				produto.put("quantidade", p.getQuantidade().toString());
+				produto.put("total",p.getValor() * p.getQuantidade() +"");
 
-		labelId.setText(id);
-		labelNome.setText(nome);
-		labelValor.setText(valor);
-		listView.setItems(obsList);
+				obsList.add(produto);
+			}
+
+			tableView.setItems(obsList);
+
+		} catch (Exception e) {
+			Alerts.showAlert("Erro", "Erro ao conectar ao banco de dados", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
 
 
 	}

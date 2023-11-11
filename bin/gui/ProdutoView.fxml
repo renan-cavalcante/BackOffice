@@ -16,72 +16,90 @@
          <content>
             <VBox prefHeight="478.0" prefWidth="603.0">
                <children>
-                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="Id:">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin></Label>
-                        <Label fx:id="labelId" />
+                        <VBox prefHeight="400.0" prefWidth="300.0">
+                           <children>
+                              <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Id:">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="labelId" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox minHeight="-Infinity" prefHeight="26.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Nome:">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="labelNome" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Valor:">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="labelValor" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Quantidade">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="labelQuantidade" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" top="5.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="25.0" prefWidth="593.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Categoria:">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <padding>
+                                          <Insets left="5.0" />
+                                       </padding>
+                                    </Label>
+                                    <Label fx:id="labelCategoria">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="btnEstoque" layoutX="68.0" layoutY="54.0" mnemonicParsing="false" onAction="#onBtnEstoque" prefHeight="48.0" prefWidth="118.0" text="ESTOQUE" />
+                           </children>
+                        </AnchorPane>
                      </children>
-                     <VBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox minHeight="-Infinity" prefHeight="26.0" prefWidth="200.0" spacing="5.0">
-                     <children>
-                        <Label text="Nome:">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin></Label>
-                        <Label fx:id="labelNome" />
-                     </children>
-                     <VBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
-                     <children>
-                        <Label text="Valor:">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="labelValor" />
-                     </children>
-                     <VBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
-                     <children>
-                        <Label text="Quantidade">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="labelQuantidade" />
-                     </children>
-                     <VBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox prefHeight="25.0" prefWidth="593.0" spacing="5.0">
-                     <children>
-                        <Label text="Categoria:">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="labelCategoria">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                     <VBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </VBox.margin>
                   </HBox>
                   <HBox minHeight="-Infinity" prefHeight="23.0" prefWidth="200.0" spacing="5.0">
                      <children>

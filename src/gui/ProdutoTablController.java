@@ -14,6 +14,7 @@ import gui.util.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -29,6 +30,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.entity.CategoriaProduto;
 import model.entity.Produto;
 import model.services.CategoriaProdutoService;
@@ -135,6 +137,7 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 						controller.setProduto(categoria);
 						controller.setProdutoService(new ProdutoService());
 						controller.updateDataForm();
+		
 						controller.subscribeDataListener(this);
 					});
 					
@@ -223,6 +226,17 @@ public class ProdutoTablController implements Initializable, DataChargeListener 
 
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle(titulo);
+			dialogStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+				
+				@Override
+				public void handle(WindowEvent t) {
+					t.consume();
+					updateTableView();
+					tableViewProduto.refresh();
+					dialogStage.close();
+					
+				}
+			});
 			dialogStage.setScene(new Scene(pane));
 			dialogStage.setResizable(false);
 			dialogStage.initOwner(parentStage);

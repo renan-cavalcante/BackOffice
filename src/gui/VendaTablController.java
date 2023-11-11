@@ -70,6 +70,9 @@ public class VendaTablController implements Initializable, DataChargeListener {
 
 	@FXML
 	private TableColumn<Map, String> tableColumnDescricao;
+	
+	@FXML
+	private TableColumn<Map, String> tableColumnData;
 
 	private ObservableList<Map<String, String>> obsList;
 
@@ -158,6 +161,7 @@ public class VendaTablController implements Initializable, DataChargeListener {
 		tableColumnNome.setCellValueFactory(new MapValueFactory<>("nome"));
 		tableColumnValor.setCellValueFactory(new MapValueFactory<>("valor"));
 		tableColumnQuantidade.setCellValueFactory(new MapValueFactory<>("quantidade"));
+		tableColumnData.setCellValueFactory(new MapValueFactory<>("data"));
 
 		Stage stage = (Stage) Main.getMainScene().getWindow();
 		tableViewVenda.prefHeightProperty().bind(stage.heightProperty());
@@ -181,6 +185,7 @@ public class VendaTablController implements Initializable, DataChargeListener {
 					itens += aux.pop().getQuantidade();
 				}
 				venda.put("quantidade", itens.toString());
+				venda.put("data", v.getDataFormat());
 				vendas.add(venda);
 
 				obsList.add(venda);
