@@ -16,6 +16,7 @@ Trabalho da aula de Estrutura de dados com o objetivo de aplicar os conceitos de
 O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, Produtos e Categoria dos Produtos, além de permitir lançar vendas para os clientes.
 
 <br>
+
 ### Tecnologias usadas
 
 - Java 17 para o back-end
