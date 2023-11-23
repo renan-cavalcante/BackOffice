@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import csvConnection.Pilha;
+import lib.Pilha;
 import db.DB;
 import gui.util.Utils;
 import model.entity.Produto;

@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import csvConnection.Pilha;
 import dao.IArquivoCSV;
 import db.DB;
 import gui.util.Utils;
+import lib.Pilha;
 import model.entity.Produto;
 import model.entity.Venda;
 
@@ -35,6 +35,7 @@ public class VendaDaoCsv implements IArquivoCSV<Venda> {
 			conteudo[2] = produtos.pop().getQuantidade().toString();
 			dao.insert(conteudo);
 		}
+
 
 	}
 

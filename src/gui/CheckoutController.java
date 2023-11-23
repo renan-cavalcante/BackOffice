@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import csvConnection.Pilha;
+import lib.Pilha;
 import exercicio3.filalib.Fila;
 import gui.listeners.DataChargeListener;
 import gui.util.Utils;

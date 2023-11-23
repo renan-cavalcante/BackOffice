@@ -3,7 +3,7 @@ package model.entity;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import csvConnection.Pilha;
+import lib.Pilha;
 
 public class Venda {
 

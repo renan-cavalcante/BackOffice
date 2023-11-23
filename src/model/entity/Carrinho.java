@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import javax.naming.directory.InvalidAttributesException;
 
-import csvConnection.Pilha;
+import lib.Pilha;
 
 public class Carrinho {
 	
