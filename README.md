@@ -2,9 +2,9 @@
 <br><br>
 ### Membros
 
-Lucas dos Santos Batista
-Jean Conde Dieguez
-Renan Cavalcante Gama
+Lucas dos Santos Batista<br>
+Jean Conde Dieguez<br>
+Renan Cavalcante Gama<br>
 Vinicius Henrique Poleti
 
 <br><br>
