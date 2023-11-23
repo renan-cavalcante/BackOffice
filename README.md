@@ -1,6 +1,13 @@
 # BackOffice
 <br><br>
+### Membros
 
+Lucas dos Santos Batista
+Jean Conde Dieguez
+Renan Cavalcante Gama
+Vinicius Henrique Poleti
+
+<br><br>
 ### Descrição
 
 Trabalho da aula de Estrutura de dados com o objetivo de aplicar os conceitos de Fila, Pilha e Lista aprendidos em aula, desenvolvendo um sistema de Back-Office.<br>
