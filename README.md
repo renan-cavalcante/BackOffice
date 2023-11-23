@@ -26,4 +26,7 @@ O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, P
         --module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls
 - substituindo caminho, pelo o caminho onde esta instalado o openJFK na sua maquina
 
+<br><br>
+### Diagrama de classes
 
+![Diagrama](https://github.com/renan-cavalcante/BackOffice/blob/main/BackOffice.drawio.png)
