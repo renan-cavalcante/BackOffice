@@ -1,5 +1,5 @@
 # BackOffice
-<br><br>
+<br>
 ### Membros
 
 Lucas dos Santos Batista<br>
@@ -7,13 +7,13 @@ Jean Conde Dieguez<br>
 Renan Cavalcante Gama<br>
 Vinicius Henrique Poleti
 
-<br><br>
+<br>
 ### Descrição
 
 Trabalho da aula de Estrutura de dados com o objetivo de aplicar os conceitos de Fila, Pilha e Lista aprendidos em aula, desenvolvendo um sistema de Back-Office.<br>
 O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, Produtos e Categoria dos Produtos, além de permitir lançar vendas para os clientes.
 
-<br><br>
+<br>
 ### Tecnologias usadas
 
 - Java 17 para o back-end
@@ -22,7 +22,7 @@ O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, P
 - Padrão DAO para acesso a dados
 - Arquivos CSV para armazenar dados
 
-<br><br>
+<br>
 ### Configuração
 
 - Baixe o openJFK 21 em https://gluonhq.com/products/javafx/
@@ -33,7 +33,7 @@ O sistema permite o cadastro, atualização, consulta e exclusão de Clientes, P
         --module-path C:\caminho\javafx-sdk\lib --add-modules=javafx.fxml,javafx.controls
 - substituindo caminho, pelo o caminho onde esta instalado o openJFK na sua maquina
 
-<br><br>
+<br>
 ### Diagrama de classes
 
 ![Diagrama](https://github.com/renan-cavalcante/BackOffice/blob/main/BackOffice.drawio.png)
