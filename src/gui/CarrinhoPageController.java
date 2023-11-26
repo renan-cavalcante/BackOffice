@@ -134,7 +134,9 @@ public class CarrinhoPageController implements Initializable, DataChargeListener
 		if (comoBoxCliente.getSelectionModel().getSelectedItem() != null) {
 			try {
 				String[] dadosCliente = comoBoxCliente.getEditor().getText().split(",");
-				Cliente c = clienteService.findById(dadosCliente[1]);
+				System.out.println(dadosCliente[1]);
+				Cliente c = clienteService.findById(dadosCliente[1].trim());
+				System.out.println(c);
 				carrinho.setCliente(c);
 				labelNome.setText(carrinho.getCliente().getNome());
 				labelEndereco.setText(carrinho.getCliente().getEndereco().toString());
